@@ -1,7 +1,6 @@
 # JC-DubStepGun-lsl
 
-texture & model - source
-_
+# texture & model - source
 
 
 https://www.moddb.com/games/saints-row-iv/downloads/sr3-sriv-weapon-archive
