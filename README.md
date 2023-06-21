@@ -1,17 +1,17 @@
 # JC-DubStepGun-lsl
 
---------------------------------------------------------------------------------------------------------------------
+-
 texture & model - source
---------------------------------------------------------------------------------------------------------------------
+-
 
 https://www.moddb.com/games/saints-row-iv/downloads/sr3-sriv-weapon-archive
 https://vrcmods.com/item/3138-ANIMATED-Dubstep-Gun-w-multiple-textures
 https://www.saintsrowmods.com/forum/threads/new-dubstep-gun-music.18553/
 https://www.saintsrowmods.com/forum/threads/weapon-texture-mods-mostly-decker-style.5996/
 
---------------------------------------------------------------------------------------------------------------------
+-
 notecard config long-clip
---------------------------------------------------------------------------------------------------------------------
+-
 
 shoot_timing=3.0
 long_clip|9=uuid
@@ -19,9 +19,9 @@ long_clip|9=uuid
 long_clip|9=uuid
 
 
---------------------------------------------------------------------------------------------------------------------
+-
 notecard config short-clip
---------------------------------------------------------------------------------------------------------------------
+-
 
 shoot_timing=3.0
 idle_music=uuid
