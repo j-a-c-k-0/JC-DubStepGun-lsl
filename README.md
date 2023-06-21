@@ -9,9 +9,9 @@ https://vrcmods.com/item/3138-ANIMATED-Dubstep-Gun-w-multiple-textures
 https://www.saintsrowmods.com/forum/threads/new-dubstep-gun-music.18553/
 https://www.saintsrowmods.com/forum/threads/weapon-texture-mods-mostly-decker-style.5996/
 
-_
+=
 notecard config long-clip
-_
+=
 
 shoot_timing=3.0
 long_clip|9=uuid
