@@ -145,10 +145,7 @@ llDialog(llGetOwner(),
 ["[ ⚙ setting ]","[ ♫ songs ]","[ ♫ random ]","[ 🛠️️ option ]",gun_power(),gun_holster_D(),"[ exit ]","[ ⦿ wub ]",firing_option()],ichannel);
 }
 dialog_option()
-{ 
-list target0 =llGetLinkPrimitiveParams(particle0,[PRIM_DESC]);
-list target1 =llGetLinkPrimitiveParams(particle2,[PRIM_DESC]);
-list items0 = llParseString2List(llList2String(target1,0), ["="], []);
+{
 llDialog(llGetOwner(),
 "option"+"\n"+"\n"
 ,["[ 🖌️ texture ]","[ 🔧 adjust ]","[ ⟳ reset ]","[ main ]","[ exit ]"],ichannel);
