@@ -1,3 +1,20 @@
+@SwellImSorry
+shoot_timing=3.5
+idle_music=10c84d94-fec5-c610-d009-1b9dc9388ce7
+start_fire=b6d0a583-2f81-8774-8d8a-07391271876e
+shoot_sound=8ea7cd3e-51e4-95bb-c775-dc509a10145c
+
+@CaravanPalaceLoneDigger
+shoot_timing=1.2
+idle_music=6c051636-2fc5-b99c-88d7-fd15f9474464
+start_fire=f9516522-3421-719e-069e-fbf58f2a9863
+shoot_sound=c7a56af6-191b-6b68-7bf6-0302cc934bcb
+
+@BryanAdamsRunToYou
+shoot_timing=2.8
+idle_music=49d9839e-0d9b-1b06-fb08-76dea106b015
+start_fire=d66227b1-df25-cfc5-5cc7-995e60a487c0
+shoot_sound=2cf10f8e-55c7-89c4-2cc2-e3381d1b9f1e
 
 @LaunchkeyDubstepRemix
 shoot_timing=1.65
