@@ -27,6 +27,5 @@ default
  llSetLinkPrimitiveParamsFast(getLinkNum("turn3"),[PRIM_POS_LOCAL,<-0.003901,-0.117590,0.127442>,PRIM_SIZE,<0.068108,0.033288,0.063447>,PRIM_ROT_LOCAL,<0.000000,0.000000,0.000000,1.000000>]);
  llSetLinkPrimitiveParamsFast(getLinkNum("turn2"),[PRIM_POS_LOCAL,<-0.003654,-0.183191,0.127440>,PRIM_SIZE,<0.068108,0.033288,0.063447>,PRIM_ROT_LOCAL,<0.000000,0.000000,0.000000,1.000000>]);
  llSetLinkPrimitiveParamsFast(getLinkNum("turn1"),[PRIM_POS_LOCAL,<-0.003651,-0.247518,0.127437>,PRIM_SIZE,<0.068108,0.033288,0.063447>,PRIM_ROT_LOCAL,<0.000000,0.000000,0.000000,1.000000>]);
- llSleep(0.2);
- llRemoveInventory(llGetScriptName());
+ llSleep(0.2); llRemoveInventory(llGetScriptName());
 }}
