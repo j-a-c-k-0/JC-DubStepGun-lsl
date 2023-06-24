@@ -1,3 +1,16 @@
+
+@GlitchHoves
+shoot_timing=1.4
+idle_music=4c15bedc-7384-ab10-ec39-55f1a93e415e
+start_fire=0ca4fd64-d113-b8ee-95e1-1ec1a081c0a7
+shoot_sound=f9ba3a39-2f12-6fed-5b1f-10f530b2a747
+
+@WorkItTavi
+shoot_timing=1.4
+idle_music=79990696-357a-b75e-74ef-6f2c3a0f0370
+start_fire=f708b227-8e2e-60bb-918c-0647251df0ee
+shoot_sound=af59a708-ac3e-6a82-1905-608062e3dbd6
+
 @SwellImSorry
 shoot_timing=3.5
 idle_music=10c84d94-fec5-c610-d009-1b9dc9388ce7
