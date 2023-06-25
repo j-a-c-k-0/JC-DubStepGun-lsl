@@ -19,9 +19,8 @@ speaker = getLinkNum("speaker");
 radius_link = getLinkNum("starget");
 particle1 = getLinkNum("particle1");
 particle2 = getLinkNum("particle2");
-songlist = list_inv(INVENTORY_NOTECARD); slist_size = llGetListLength(songlist); songlist = llListSort(songlist,1, TRUE);
+songlist = list_inv(INVENTORY_NOTECARD); slist_size = llGetListLength(songlist); llRequestPermissions(llGetOwner(),PERMISSION_TAKE_CONTROLS);
 llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,checklist(music_selection)+"="+(string)llGetFreeMemory()]);
-llRequestPermissions(llGetOwner(),PERMISSION_TAKE_CONTROLS);
 }
 integer getLinkNum(string primName)
 {
@@ -42,9 +41,9 @@ list list_inv(integer itype)
     list InventoryList; integer count = llGetInventoryNumber(itype); string ItemName;
     while (count--)
     {
-        ItemName = llGetInventoryName(itype, count);
-        if (ItemName != llGetScriptName())  
-        InventoryList += ItemName;   
+    ItemName = llGetInventoryName(itype, count);
+    if (ItemName != llGetScriptName())  
+    InventoryList += ItemName;   
     }return InventoryList;
 }
 list order_buttons(list buttons)
@@ -97,16 +96,16 @@ for ( ; x < Lengthx; x += 1)
 } }llOwnerSay("Could not find anything"); llMessageLinked(LINK_THIS, 0,"mainmenu_request","");}
 option_topmenu()
 {
-list item =llGetLinkPrimitiveParams(radius_link,[PRIM_DESC]);
-list target =llGetLinkPrimitiveParams(speaker,[PRIM_DESC]);
-integer music_list = llGetListLength(songlist); 
-integer page= (music_list / 9) + 1 ;
+list item=llGetLinkPrimitiveParams(radius_link,[PRIM_DESC]);
+list target=llGetLinkPrimitiveParams(speaker,[PRIM_DESC]);
+integer music_list=llGetListLength(songlist); 
+integer page=(music_list / 9) + 1;
 llTextBox(llGetOwner(),
 "\n"+"[ Status ]"+"\n\n"+
 "Memory = "+(string)llGetFreeMemory()+"\n"+
 "Sound Radius = "+(string)llDeleteSubString(llList2String(item,0),4,100)+"\n"+
 "Volume = "+(string)llDeleteSubString(llList2String(target,0),4,100)+"\n"+
-"Musics = "+(string)(music_list-1)+"\n"+
+"Musics = "+(string)music_list+"\n"+
 "Page = "+(string)page+"\n\n"+
 "[ Command Format ]"+"\n\n"+
 "Search > ( s/music )"+"\n"+
@@ -155,13 +154,13 @@ default
           if(llList2String(items0,0) == "p"){dialog_songmenu((integer)llList2String(items0,1));}
           if(llList2String(items0,0) == "r")
           {
-          llSetLinkPrimitiveParamsFast(radius_link,[PRIM_DESC,check_output(llList2Float(items0,1))]);
+          llSetLinkPrimitiveParamsFast(radius_link,[PRIM_DESC,llDeleteSubString(check_output(llList2Float(items0,1)),4,100)]);
           llMessageLinked(LINK_THIS,0,"mainmenu_request","");
           llMessageLinked(speaker,0,"sound_range","");
           }
           if(llList2String(items0,0) == "v")
           {
-          llSetLinkPrimitiveParamsFast(speaker,[PRIM_DESC,check_output(llList2Float(items0,1))]);
+          llSetLinkPrimitiveParamsFast(speaker,[PRIM_DESC,llDeleteSubString(check_output(llList2Float(items0,1)),4,100)]);
           llMessageLinked(LINK_THIS,0,"mainmenu_request","");
           llMessageLinked(speaker,0,"volume_change|"+(string)llList2Float(items0,1),"");
           }
