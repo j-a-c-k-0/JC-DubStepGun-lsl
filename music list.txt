@@ -1,3 +1,20 @@
+@OMFGHello
+shoot_timing=2.0
+idle_music=25f927af-779f-2fe9-5da9-12fffb3a4e06
+start_fire=f947b568-c65b-3bfc-339c-38dda3e7dca5
+shoot_sound=b8268419-d797-b9d3-1011-9c71b43a0ae4
+
+@KrewellaComeAndGetIt
+shoot_timing=0.8
+idle_music=26298b5a-2d73-e7d5-bccd-600e445ddd6c
+start_fire=1ae5db89-1b4e-1356-a420-61ea55672e4c
+shoot_sound=91c84b49-d597-07e3-3fd0-8f35c771d5f7
+
+@AstronautApollo
+shoot_timing=2.0
+idle_music=bd42fc00-3eaf-8b9c-e339-041d207efc63
+start_fire=546dfd79-1fcd-27b4-3f9b-88aac5ac465f
+shoot_sound=3c15b6a8-bf8f-5ae6-2745-a54b080c3995
 
 @GlitchHoves
 shoot_timing=1.4
