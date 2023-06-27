@@ -1,3 +1,9 @@
+
+# DubStepGun v2.6.15-0081
+
+Musics = 42
+-
+
 # texture & model - source
 
 https://www.moddb.com/games/saints-row-iv/downloads/sr3-sriv-weapon-archive
