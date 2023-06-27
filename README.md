@@ -1,16 +1,17 @@
 
 # DubStepGun v2.6.15-0081
 
-Bullet
+*Bullet
+
 0. Default_Wub
 1. Collision_Wub
 2. ExLarge_Shockwave
 3. Large_Shockwave
 4. Medium_Shockwave
 5. Small_Shockwave
-6. None
 
-texture
+*texture
+
 0. *Vindicate
 1. *Swingtime
 2. *Oktoberfest
