@@ -64,27 +64,36 @@ gun_power_state = FALSE; gun_holster = FALSE;
 llSetLinkPrimitiveParamsFast(meter,[PRIM_DESC,"trigger"]);
 llSetLinkPrimitiveParamsFast(animated1,[PRIM_DESC,""]);
 llSetLinkPrimitiveParamsFast(animated0,[PRIM_DESC,"none"]);
-list target =llGetLinkPrimitiveParams(turn1,[PRIM_DESC]);
-list items0 = llParseString2List(llList2String(target,0),["="],[]);
+list target=llGetLinkPrimitiveParams(turn1,[PRIM_DESC]);
+list items0=llParseString2List(llList2String(target,0),["="],[]);
 llSetLinkPrimitiveParamsFast(LINK_THIS,[PRIM_POS_LOCAL,(vector)llList2String(items0,0),PRIM_ROT_LOCAL
 ,(rotation)llList2String(items0,1),PRIM_TEXT,"",llGetColor(ALL_SIDES),0,PRIM_SIZE,<0,0,0>]);
 llRequestPermissions(llGetOwner(),PERMISSION_TAKE_CONTROLS|PERMISSION_TRIGGER_ANIMATION);
 texturelist = list_inv(INVENTORY_TEXTURE); texture_slist_size = llGetInventoryNumber(INVENTORY_TEXTURE);
 }
+integer getLinkNum(string primName)
+{
+integer primCount = llGetNumberOfPrims();
+integer i;
+for (i=0; i<primCount+1;i++){  
+if (llGetLinkName(i)==primName) return i;
+} 
+return FALSE;
+}
 list list_inv(integer itype)
 {
-list    InventoryList;integer count = llGetInventoryNumber(itype);  string  ItemName;
+list InventoryList;integer count = llGetInventoryNumber(itype);string ItemName;
 while (count--)
 {
   ItemName = llGetInventoryName(itype, count);
-  if(ItemName != llGetScriptName() )  
+  if(ItemName != llGetScriptName())
   InventoryList += ItemName;   
   }return InventoryList;
 }
 dialog0()
 {
-ichannel = llFloor(llFrand(1000000) - 100000); llListenRemove(chanhandlr); 
-chanhandlr = llListen(ichannel, "", NULL_KEY, ""); dialog_topmenu();
+ichannel=llFloor(llFrand(1000000)-100000);llListenRemove(chanhandlr); 
+chanhandlr=llListen(ichannel,"",NULL_KEY,"");dialog_topmenu();
 }
 reset()
 {
@@ -99,17 +108,8 @@ llSetLinkPrimitiveParamsFast(turn2,[PRIM_DESC,default_positions2]);
 llSetLinkPrimitiveParamsFast(turn3,[PRIM_DESC,default_positions3]);
 llSetLinkPrimitiveParamsFast(particle0,[PRIM_DESC,"Default_Wub"]);
 llSetLinkPrimitiveParamsFast(radius_link,[PRIM_DESC,"OFF"]);
-list items0 = llParseString2List(default_positions1, ["="], []);
+list items0 = llParseString2List(default_positions1,["="],[]);
 llSetLinkPrimitiveParamsFast(LINK_THIS,[PRIM_POS_LOCAL,(vector)llList2String(items0,0),PRIM_ROT_LOCAL,(rotation)llList2String(items0,1)]);
-}
-integer getLinkNum(string primName)
-{
-integer primCount = llGetNumberOfPrims();
-integer i;
-for (i=0; i<primCount+1;i++){  
-if (llGetLinkName(i)==primName) return i;
-} 
-return FALSE;
 }
 list order_buttons(list buttons)
 {
@@ -136,7 +136,7 @@ dialog_topmenu()
 { 
 list target0 =llGetLinkPrimitiveParams(particle0,[PRIM_DESC]);
 list target1 =llGetLinkPrimitiveParams(particle2,[PRIM_DESC]);
-list items0 = llParseString2List(llList2String(target1,0), ["="], []);
+list items0 = llParseString2List(llList2String(target1,0),["="],[]);
 llDialog(llGetOwner(),
 "main menu"+"\n"+"\n"+
 "Memory = "+llList2String(items0,1)+"\n"+
@@ -146,32 +146,31 @@ llDialog(llGetOwner(),
 }
 dialog_option()
 {
-llDialog(llGetOwner(),
-"option"+"\n"+"\n"
+llDialog(llGetOwner(),"option"+"\n\n"
 ,["[ 🖌️ texture ]","[ 🔧 adjust ]","[ ⟳ reset ]","[ main ]","[ exit ]"],ichannel);
 }
 bullet_option_dialog()
 {
-slist_size_bullet = llGetListLength(bullet_option_list); 
+slist_size_bullet = llGetListLength(bullet_option_list);
 dialog_bullet_option(cur_page_bullet);
 }
 dialog_bullet_option(integer page)
 {
-integer pag_amt = llCeil((float)slist_size_bullet / 9.0);
-if(page > pag_amt) page = 1;
-if(page < 1) page = pag_amt;
-cur_page_bullet = page; integer destinationsonpage;
-if(page == pag_amt)
-destinationsonpage = slist_size_bullet % 9;
-if(destinationsonpage == 0)
-destinationsonpage = 9; integer fspnum = (page*9)-9; list dbuf; integer i;
-for(; i < destinationsonpage; ++i)
-{
-dbuf += ["Choo #" + (string)(fspnum+i)];
-}
-list target =llGetLinkPrimitiveParams(particle0,[PRIM_DESC]);
-list snlist = numerizelist(llList2List(bullet_option_list, fspnum, (page*9)-1), fspnum, ". ");
-llDialog(llGetOwner(),"Bullet = "+llList2String(target,0)+"\n\n"+ llDumpList2String(snlist, "\n"),order_buttons(dbuf + ["<<<", "[ main ]", ">>>"]),ichannel);
+    integer pag_amt = llCeil((float)slist_size_bullet / 9.0);
+    if(page > pag_amt) page = 1;
+    if(page < 1) page = pag_amt;
+    cur_page_bullet = page; integer destinationsonpage;
+    if(page == pag_amt)
+    destinationsonpage = slist_size_bullet % 9;
+    if(destinationsonpage == 0)
+    destinationsonpage = 9; integer fspnum = (page*9)-9; list dbuf; integer i;
+    for(; i < destinationsonpage; ++i)
+    {
+    dbuf += ["Choo #" + (string)(fspnum+i)];
+    }
+    list target =llGetLinkPrimitiveParams(particle0,[PRIM_DESC]);
+    list snlist = numerizelist(llList2List(bullet_option_list, fspnum, (page*9)-1), fspnum, ". ");
+    llDialog(llGetOwner(),"Bullet = "+llList2String(target,0)+"\n\n"+ llDumpList2String(snlist,"\n"),order_buttons(dbuf + ["<<<", "[ main ]", ">>>"]),ichannel);
 }
 dialog_texturemenu(integer page)
 {
@@ -188,7 +187,7 @@ dialog_texturemenu(integer page)
     dbuf += ["Text #" + (string)(fspnum+i)];
     }
     list snlist = numerizelist(llList2List(texturelist, fspnum, (page*9)-1), fspnum, ". ");
-    llDialog(llGetOwner(),"Choose an theme:\n" + llDumpList2String(snlist, "\n"),order_buttons(dbuf + ["<<<", "[ main ]", ">>>"]),ichannel);
+    llDialog(llGetOwner(),"choose an theme"+"\n\n"+ llDumpList2String(snlist,"\n"),order_buttons(dbuf + ["<<<", "[ main ]", ">>>"]),ichannel);
 }
 apply_texture(string msg)
 {
