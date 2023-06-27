@@ -1,6 +1,8 @@
 
 # DubStepGun v2.6.15-0081
 
+Musics = 42
+
 * Bullet
 
 0. Default_Wub
@@ -12,20 +14,20 @@
 
 * texture
 
-0. *Vindicate
-1. *Swingtime
-2. *Oktoberfest
-3. *Metalsonic
-4. *Industrial
-5. *Hyperpotion
-6. *Hexagon
-7. *Dethmettal
-8. *Default
-9. *Decker
-10. *Classical
-11. *Christmas
-12. *Basscannon
-13. *Arsenalpyramid
+0. Vindicate
+1. Swingtime
+2. Oktoberfest
+3. Metalsonic
+4. Industrial
+5. Hyperpotion
+6. Hexagon
+7. Dethmettal
+8. Default
+9. Decker
+10. Classical
+11. Christmas
+12. Basscannon
+13. Arsenalpyramid
 
 # texture & model - source
 
