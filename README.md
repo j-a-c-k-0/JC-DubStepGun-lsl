@@ -1,7 +1,7 @@
 
-~ DubStepGun v2.6.15-0081
+* DubStepGun v2.6.15-0081
 
-~ texture & model - source
+* texture & model - source
 
 https://www.saintsrowmods.com/forum/threads/weapon-texture-mods-mostly-decker-style.5996/
 
