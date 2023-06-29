@@ -1,3 +1,10 @@
+
+@KillParisSlapMeGRiZRemix
+shoot_timing=1.15
+idle_music=7a67fe0f-13a3-27f5-f3c8-e0b8eaf3361c
+start_fire=e8675947-eb2a-e1d6-605e-f25c01b96f26
+shoot_sound=141ddf56-0867-66af-19c9-81024e382ea8
+
 @Deadmau5PettingZoo
 shoot_timing=1.8
 idle_music=e59175b2-e85f-5061-3502-1402b8dfbbeb
@@ -135,12 +142,6 @@ shoot_timing=1.9
 idle_music=810e0dfa-a2d5-1977-0b81-e164736a5a82
 start_fire=485b9c4a-acf7-e144-d0eb-3b1def1e53f2
 shoot_sound=6c3aedc6-59c4-587f-48fe-2db842bf78be
-
-@GRIZ
-shoot_timing=0.6
-idle_music=7b9c335b-ec7a-0a32-8fc8-ee7ecf74f39a
-start_fire=e256d148-8733-2601-c6c0-9bacc3a2262e
-shoot_sound=e72ce998-def1-225d-49f9-c8bb8834c234
 
 @HeyYa!
 shoot_timing=1.0
