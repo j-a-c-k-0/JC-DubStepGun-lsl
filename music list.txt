@@ -1,3 +1,8 @@
+@TombstoneDiscord
+shoot_timing=1.2
+idle_music=1798e34c-e259-51f4-d051-82bc4966e7a6
+start_fire=2f3aea4c-7a25-67aa-e8a7-0c928a3f9494
+shoot_sound=b320db89-7503-580a-c9f0-358dac152d49
 
 @KillParisSlapMeGRiZRemix
 shoot_timing=1.15
@@ -232,12 +237,6 @@ shoot_timing=1.0
 idle_music=c2ad4c0c-12b5-bdc2-13db-b9093eba4a63
 start_fire=5bf45b1e-70a0-f454-9e14-13a35fbb2c39
 shoot_sound=addcf1d7-984b-19dd-c247-deab2a159be8
-
-@TombstoneDiscord
-shoot_timing=8.3
-idle_music=2d85f4e9-d177-f2ba-22f6-f1c825263410
-start_fire=42a57152-24ac-bc09-ab04-89c9ea6ffa43
-shoot_sound=2ab97178-5529-8f82-9c08-2756f1b8e633
 
 @Vindicate
 shoot_timing=2.0
