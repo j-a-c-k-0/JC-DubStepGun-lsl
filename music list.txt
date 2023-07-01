@@ -1,3 +1,10 @@
+
+@SugaSugaUNOwen
+shoot_timing=1.2
+idle_music=6780adc0-74f5-d752-f7e2-3e3658260be8
+start_fire=154f5195-1b56-62e5-e722-a2c61188e649
+shoot_sound=ec76492f-6eaf-9626-2ed9-65ff35652914
+
 @TombstoneDiscord
 shoot_timing=1.2
 idle_music=1798e34c-e259-51f4-d051-82bc4966e7a6
