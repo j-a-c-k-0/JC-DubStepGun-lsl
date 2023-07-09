@@ -1,3 +1,20 @@
+@TheSimilouAllThisLove
+shoot_timing=1.3
+idle_music=bb487c7e-28be-ee31-702b-baaa956a726d
+start_fire=dc4a8764-3b79-2b27-b953-1442b18254d4
+shoot_sound=92dfce2c-e651-edf1-d0cd-3d1b9bb2daec
+
+@ReaktorProductionsAfterglow
+shoot_timing=2.1
+idle_music=9412a0a3-5113-0950-e86e-d3f8a7234ac9
+start_fire=5faee628-1d1b-93d8-7e85-875bdd54d928
+shoot_sound=2ff337af-ec13-34f5-d32d-15f67c876479
+
+@ChildProtectiveServices
+shoot_timing=1.7
+idle_music=764f7346-7f5a-c6ea-9984-c4a7bcd1eb0f
+start_fire=9a1011f8-ffc0-d0b0-9c54-2432057ead98
+shoot_sound=eba7371d-948c-d036-d134-b02403a68255
 
 @SugaSugaUNOwen
 shoot_timing=1.2
