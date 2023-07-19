@@ -4,7 +4,7 @@ default
     {
       if (start_param)
       {
-      llSetKeyframedMotion([llRot2Fwd(llGetRot())*30, llEuler2Rot(<0, 0, 66666>), .577], [KFM_MODE, KFM_LOOP]);
+      llSetKeyframedMotion([llRot2Fwd(llGetRot())*10, llEuler2Rot(<0, 0, 66666>), .2], [KFM_MODE, KFM_LOOP]);
       llSetTimerEvent(.01);
       }
    }
