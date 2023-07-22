@@ -1,8 +1,8 @@
 float rate = 0.01;
 list pattern 
 =[
-<0,0,-1>,
-<0,0,1>
+<0,0,-2>,
+<0,0,0>
 ];
 integer patternnum = 0;
 integer step_pattern = 5;
@@ -12,7 +12,7 @@ movement_pattern()
         float percent = (float)index_pattern / step_pattern;
         vector from = llList2Vector (pattern, patternnum - 1) * (1.0 - percent);
         vector to = llList2Vector (pattern, patternnum) * percent;
-        llSetLinkPrimitiveParamsFast(LINK_ALL_OTHERS, [ PRIM_POS_LOCAL,from + to]);
+        llSetLinkPrimitiveParamsFast(LINK_ALL_OTHERS, [ PRIM_POS_LOCAL,-(from + to)]);
         index_pattern = index_pattern + 1;
         if (index_pattern >= step_pattern)
         {
@@ -24,10 +24,13 @@ movement_pattern()
 }
 default 
 {
-    state_entry()
-    {
-    llSetTimerEvent(rate);
-    llSetLinkPrimitiveParamsFast(LINK_ALL_OTHERS, [ PRIM_POS_LOCAL,<0,0,0>]);
+    on_rez(integer start_param)
+    {   
+        if (start_param)
+        {
+        llSetTimerEvent(rate);
+        llSetLinkPrimitiveParamsFast(LINK_ALL_OTHERS, [ PRIM_POS_LOCAL,<0,0,0>]);
+        }
     }
     timer() 
     {
