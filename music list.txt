@@ -1,4 +1,4 @@
-string decrypted = llBase64ToString(llXorBase64(data,llStringToBase64(pass)));  
+string decrypted = llBase64ToString(llXorBase64(data,llStringToBase64(pass)));
 string crypt = llXorBase64(llStringToBase64(data),llStringToBase64(pass));
 "jackcrux"
 
