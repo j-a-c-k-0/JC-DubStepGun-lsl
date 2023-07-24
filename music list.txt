@@ -1,4 +1,5 @@
-https://wiki.secondlife.com/wiki/LlXorBase64
+string decrypted = llBase64ToString(llXorBase64(data,llStringToBase64(pass)));  
+string crypt = llXorBase64(llStringToBase64(data),llStringToBase64(pass));
 "jackcrux"
 
 YBILBAwGKgwDDAoFBE9EVl9rCg8PFyoVHxIKCF5HREEOUFFbB19EHVNYTlxWQUxVX1MFCU4QERpbAAINUUNDGV5rEB8CAAEnDAgRDl5AFEtZBFtcUV8RSQtYTg8HRxRVD1hbDU5CFEFeVVAPVBFMTghrEAMMHQEnGQ4WBQdPQ09ZAFsOU0tYHQ9QW0ZSRBEdRwJWXAdfQUBYVFAPAUUXGQhSaQ==
