@@ -1,8 +1,8 @@
 list bullet_option_list=["Default_Wub","Collision_Wub","ExLarge_Shockwave","Large_Shockwave","Medium_Shockwave","Small_Shockwave","None"];
 list texturelist;
 string default_positions1 = "<-0.00056, 0.15325, -0.32694>=<0.65328, 0.27060, 0.65329, -0.27057>";
-string default_positions2 = "<-0.18765, 0.44787, 0.44810>=<-0.70712, 0.00000, -0.00002, 0.70709>";
-string default_positions3 = "<-0.08573, -0.05066, 0.34594>=<-0.31935, 0.08553, 0.17530, 0.92735>";
+string default_positions2 = "<-0.12614, 0.34405, 0.39962>=<-0.70712, 0.00000, -0.00002, 0.70709>";
+string default_positions3 = "<0.01161, -0.05880, 0.27515>=<-0.39268, 0.50049, 0.32452, 0.70000>";
 string default_texture = "e4db4e44-4ba5-a7c3-051f-6ea3f880ce85";
 string message_adjustment = "move me and click to apply pos";
 string animation_hold = "[Hold]";
