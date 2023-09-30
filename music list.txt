@@ -357,9 +357,9 @@ shoot_sound=addcf1d7-984b-19dd-c247-deab2a159be8
 
 @Vindicate
 shoot_timing=2.0
-idle_music=695ddd9e-7330-f890-1b5a-2d0a6197a43d
-start_fire=058f3f2b-e38e-29f2-4f12-ae1a7487d4e7
-shoot_sound=646f8cbe-28ba-029f-675f-2275593851d1
+idle_music=4dddb1b8-705a-6dd9-1469-78bb42663c21
+start_fire=947dd296-d098-2f3f-fd3c-cbe5631b7075
+shoot_sound=eedd5280-7623-01aa-8a1f-cbf5bcb21e06
 
 
 @Xmas
