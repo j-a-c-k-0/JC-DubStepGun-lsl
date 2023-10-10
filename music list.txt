@@ -1,3 +1,9 @@
+@DontHoldMeBack
+shoot_timing=1.4
+idle_music=90dbc88e-db88-a4a3-cefe-a3b79cf64f90
+start_fire=2935ad00-78c8-976f-8824-236c14a17a19
+shoot_sound=4122bcd3-ea3c-a298-63e3-87323b18b67b
+
 @MysterySkulls
 shoot_timing=1.8
 idle_music=43a0695e-cc32-f76b-7533-ac70470988bd
