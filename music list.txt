@@ -1,3 +1,9 @@
+@TheSugarplumFairy
+shoot_timing=3.0
+idle_music=f404ba48-327b-bdda-a27c-34d59c6cb88e
+start_fire=c7c270fd-0736-52cc-80ec-741eb85a4fc6
+shoot_sound=4fd2d83c-a5b5-2366-02f4-8af6236c5dc3
+
 @DontHoldMeBack
 shoot_timing=1.4
 idle_music=90dbc88e-db88-a4a3-cefe-a3b79cf64f90
