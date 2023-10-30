@@ -92,6 +92,7 @@ llSetLinkPrimitiveParams(starget, [PRIM_GLOW,ALL_SIDES,glow,PRIM_FULLBRIGHT,ALL_
 llSetLinkPrimitiveParams(animated0, [PRIM_GLOW,ALL_SIDES,glow]);
 llSetLinkPrimitiveParams(animated1, [PRIM_GLOW,ALL_SIDES,glow]);
 }
+loop_player_mode(){shoot_sound="X";start_fire="X";shoot_timing=0.1;}
 musicselection(string A) 
 {
 list items1 = llParseString2List(A, ["="], []);
@@ -162,7 +163,7 @@ default
     findlink(); gun_shooting =0;
     llSetLinkPrimitiveParamsFast(particle1,[PRIM_DESC,""]);
     llSetLinkPrimitiveParamsFast(animated1,[PRIM_DESC,""]);
-    llSetLinkTextureAnim(starget, ANIM_ON | LOOP, ALL_SIDES,4,4,0,64,11 );   
+    llSetLinkTextureAnim(starget, ANIM_ON | LOOP, ALL_SIDES,4,4,0,64,11 );
     llSetLinkTextureAnim(animated0, ANIM_ON | LOOP, ALL_SIDES,3,6,0,64,6.4 );
     llSetLinkTextureAnim(animated1, ANIM_ON | LOOP, ALL_SIDES,3,3,0,64,6.4 );
     llRequestPermissions(llGetOwner(),PERMISSION_TAKE_CONTROLS|PERMISSION_TRIGGER_ANIMATION|PERMISSION_TRACK_CAMERA);
@@ -189,7 +190,7 @@ default
     if(llList2String(items1,0) == "upload_note"){musicselection(llList2String(items1,1));}
     if(msg == "[ Reset ]"){llStopAnimation(animation_hold);llStopAnimation(animation_aim);reset();}
     if(msg == "music_changed"){if(gun_power == TRUE)
-    { 
+    {
     if(long_clip_switch == TRUE){llMessageLinked(LINK_THIS,0,"long_sound_play","");return;}
     llMessageLinked(speaker,0,"play|"+idle_music,"");}
     }
@@ -209,10 +210,12 @@ default
           onpower();
         } }
         control(key id, integer pressed, integer change)
-        { 
+        {
+        list a =llGetLinkPrimitiveParams(slider4,[PRIM_DESC]);   
         if(gun_power == TRUE){if(gun_armed == TRUE)
         {
-          if (pressed & ~~change & (CONTROL_ML_LBUTTON)){start_shoot();state shoot_gun;}  
+          if(llList2String(a,0) == "1"){shoot_sound=idle_music;start_fire="X";shoot_timing=.01;}    
+          if (pressed & ~~change & (CONTROL_ML_LBUTTON)){start_shoot();state shoot_gun;}
           if (~pressed & change & (CONTROL_LBUTTON)){charging = 0; return;}
           if (pressed & ~change & (CONTROL_LBUTTON)){++charging; if(charging == 5){start_shoot();state shoot_gun;}}  
     }  }  }
@@ -234,7 +237,7 @@ default
     llSetTimerEvent(shoot_timing);
     llSensorRepeat("", "",AGENT,10, PI,runtime);
     llRequestPermissions(llGetOwner(),PERMISSION_TAKE_CONTROLS|PERMISSION_TRIGGER_ANIMATION|PERMISSION_TRACK_CAMERA);
-    llSetLinkPrimitiveParamsFast(animated1,[PRIM_DESC,"firing"]);  
+    llSetLinkPrimitiveParamsFast(animated1,[PRIM_DESC,"firing"]);
     if(long_clip_switch == TRUE){llMessageLinked(speaker,0,"stop",""); llMessageLinked(LINK_THIS,0,"long_sound_play","");} 
     }
     link_message(integer sender_num, integer num, string msg, key id)
