@@ -136,9 +136,11 @@ dialog_topmenu()
 { 
 list target0 =llGetLinkPrimitiveParams(particle0,[PRIM_DESC]);
 list target1 =llGetLinkPrimitiveParams(particle2,[PRIM_DESC]);
+list target2 =llGetLinkPrimitiveParams(slider3,[PRIM_DESC]);
 list items0 = llParseString2List(llList2String(target1,0),["="],[]);
 llDialog(llGetOwner(),
 "main menu"+"\n"+"\n"+
+"Memory Notecard = "+llList2String(target2,0)+"\n"+
 "Memory = "+llList2String(items0,1)+"\n"+
 "Bullet = "+llList2String(target0,0)+"\n"+
 "Music = "+llList2String(items0,0),
