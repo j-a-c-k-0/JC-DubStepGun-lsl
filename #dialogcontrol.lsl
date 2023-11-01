@@ -149,7 +149,7 @@ llDialog(llGetOwner(),
 dialog_option()
 {
 llDialog(llGetOwner(),"option"+"\n\n"
-,["[ 🖌️ texture ]","[ 🔧 adjust ]","[ ⟳ reset ]","[ main ]","[ exit ]"],ichannel);
+,["[ 🖌️ texture ]","[ 🔧 adjust ]","[ ⟳ reset ]","[ exit ]","[ main ]","[ ⚙ setting ]"],ichannel);
 }
 bullet_option_dialog()
 {
