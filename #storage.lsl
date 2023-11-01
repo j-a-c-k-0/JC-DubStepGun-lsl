@@ -142,6 +142,7 @@ default
     {
       list params = llParseString2List(str, ["|"], []); 
       if(llList2String(params, 0) == "loop_add_music"){songlist += llList2String(params, 1);slist_size = llGetListLength(songlist);}
+      if(str == "m_update"){llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,checklist(music_selection)+"="+(string)llGetFreeMemory()]);}
       if(str == "song_request"){random_channel(); dialog_songmenu(cur_page);}
       if(str == "option_request"){random_channel(); option_topmenu();}
       if(str == "[ Reset ]"){llResetScript();}
