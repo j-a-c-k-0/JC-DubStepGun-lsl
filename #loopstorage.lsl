@@ -79,8 +79,11 @@ default
     {
         if (query_id == notecardQueryId)
         {
-            if (data == EOF){ llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,(string)llGetFreeMemory()]); return; }else
+            if (data == EOF)
             {
+            llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,(string)llGetFreeMemory()]); 
+            llMessageLinked(LINK_THIS,0,"m_update",""); return; 
+            }else{
             songlist += data; ++notecardLine;
             llMessageLinked(LINK_THIS, 0, "loop_add_music"+"|"+data, NULL_KEY);
             notecardQueryId = llGetNotecardLine(notecardName, notecardLine);
