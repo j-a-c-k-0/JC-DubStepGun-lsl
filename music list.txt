@@ -1,3 +1,9 @@
+@TheAmazingDigitalCircus
+shoot_timing=1.45
+idle_music=641d416d-272d-92ce-0197-4ace8524f09e
+start_fire=fe8b6190-d4f9-33d3-193e-650fb2fdfb9e
+shoot_sound=c9301880-971b-9673-c9af-28c9eb14801a
+
 @TheSugarplumFairy
 shoot_timing=3.0
 idle_music=f404ba48-327b-bdda-a27c-34d59c6cb88e
