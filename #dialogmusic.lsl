@@ -1,16 +1,37 @@
-string notecardName = "&uuids";
-integer dialog_select_switch = FALSE;
-integer gun_power_state = FALSE;
-integer ichannel = 978461;
-integer cur_page0 = 1;
-integer cur_page = 1;
-integer radius_link;
-integer chanhandlr;
-integer particle1;
-integer particle2;
+integer long_clip_switch = FALSE;
+integer start_over = FALSE;
+integer gun_armed = FALSE;
+integer gun_power = FALSE;
+integer charging= 0;
+integer animated0;
 integer animated1;
-integer slider3;
+integer particle1;
 integer speaker;
+integer starget;
+integer slider1;
+integer slider2;
+integer slider3;
+integer slider4;
+integer meter;
+integer vinyl;
+integer turn1;
+integer turn2;
+integer turn3;
+integer gun;
+
+float firing_hold = 0.5;
+float runtime = 0.1;
+float gun_shooting;
+float glow = 0.2;
+
+string shutdown_sound = "82822418-cce5-8bc6-a1cb-7449b40b005e";
+string after_sound = "ba948a2d-84e3-f033-65f6-268512e6a0b1";
+string animation_hold = "[Hold]";
+string animation_aim = "[Aim]";
+string shoot_sound;
+string idle_music;
+string start_fire;
+float shoot_timing;
 
 integer getLinkNum(string primName)
 {
@@ -18,189 +39,255 @@ integer primCount = llGetNumberOfPrims();
 integer i;
 for (i=0; i<primCount+1;i++){  
 if (llGetLinkName(i)==primName) return i;
-} 
+}
 return FALSE;
 }
-random_channel()
+findlink() 
 {
-ichannel = llFloor(llFrand(1000000) - 100000); llListenRemove(chanhandlr);
-chanhandlr = llListen(ichannel, "", NULL_KEY, "");
+animated0 = getLinkNum("gif1");
+animated1 = getLinkNum("gif2");  
+gun = getLinkNum("DubStepGun");
+starget = getLinkNum("starget");
+meter = getLinkNum("meter");
+vinyl = getLinkNum("vinyl");
+turn1 = getLinkNum("turn1");
+turn2 = getLinkNum("turn2");
+turn3 = getLinkNum("turn3");
+speaker = getLinkNum("speaker");
+slider1 = getLinkNum("slider1");
+slider2 = getLinkNum("slider2");
+slider3 = getLinkNum("slider3");
+slider4 = getLinkNum("slider4");
+particle1 = getLinkNum("particle1");
 }
-list order_buttons(list buttons)
+shutdown() 
 {
-return llList2List(buttons, -3, -1) + llList2List(buttons, -6, -4) +
-llList2List(buttons, -9, -7) + llList2List(buttons, -12, -10);
+llSetLinkPrimitiveParams(gun, [PRIM_GLOW,0,0,PRIM_FULLBRIGHT,0,FALSE]);   
+llSetLinkAlpha(starget,0, ALL_SIDES);  
+llSetLinkAlpha(animated0,0, ALL_SIDES);
+llSetLinkAlpha(animated1,0, ALL_SIDES);
+llSetLinkPrimitiveParamsFast(meter,[PRIM_ROT_LOCAL,<0.92388, 0.00000, 0.00000, 0.38268>,PRIM_GLOW,1,0,PRIM_FULLBRIGHT,1,FALSE]);
+llSetLinkPrimitiveParams(starget, [PRIM_GLOW,ALL_SIDES,0,PRIM_FULLBRIGHT,ALL_SIDES,TRUE]); 
+llSetLinkPrimitiveParams(animated0, [PRIM_GLOW,ALL_SIDES,0]);
+llSetLinkPrimitiveParams(animated1, [PRIM_GLOW,ALL_SIDES,0]);
+llSetLinkPrimitiveParamsFast(turn1,[PRIM_ROT_LOCAL,<0.00000, 0.00000, 0.00000, 1.00000>]);
+llSetLinkPrimitiveParamsFast(turn2,[PRIM_ROT_LOCAL,<0.00000, 0.00000, 0.00000, 1.00000>]);
+llSetLinkPrimitiveParamsFast(turn3,[PRIM_ROT_LOCAL,<0.00000, 0.00000, 0.00000, 1.00000>]);
+llSetLinkPrimitiveParamsFast(speaker,[PRIM_POS_LOCAL,<-0.04538, -0.41595, -0.06606>]);
+llSetLinkPrimitiveParamsFast(slider1,[PRIM_POS_LOCAL,<-0.00383, 0.25589, 0.03017>]);
+llSetLinkPrimitiveParamsFast(slider2,[PRIM_POS_LOCAL,<-0.00383, 0.27893, 0.03018>]);
+llSetLinkPrimitiveParamsFast(slider3,[PRIM_POS_LOCAL,<-0.00383, 0.30148, 0.01477>]);
+llSetLinkPrimitiveParamsFast(slider4,[PRIM_POS_LOCAL,<-0.00383, 0.32526, 0.00815>]);
+llSetLinkPrimitiveParams(vinyl,[PRIM_OMEGA, <0,0,0>,0,0]);
 }
-list numerizelist(list tlist, integer start, string apnd)
+onpower() 
 {
-    list newlist; integer lsize = llGetListLength(tlist); integer i;
-    for(; i < lsize; i++)
-    {
-    newlist += [(string)(start + i) + apnd + llList2String(tlist, i)];
-    }return newlist;
+llSetLinkPrimitiveParams(vinyl,[PRIM_OMEGA,<1,0,0>,2,0.01]); 
+llSetLinkPrimitiveParams(gun, [PRIM_GLOW,0,glow,PRIM_FULLBRIGHT,0,TRUE]);
+llSetLinkAlpha(animated0,1, ALL_SIDES);
+llSetLinkAlpha(animated1,1, ALL_SIDES);
+llSetLinkAlpha(starget,1, ALL_SIDES);
+llSetLinkPrimitiveParamsFast(meter,[PRIM_GLOW,1,glow,PRIM_FULLBRIGHT,1,TRUE]);
+llSetLinkPrimitiveParams(starget, [PRIM_GLOW,ALL_SIDES,glow,PRIM_FULLBRIGHT,ALL_SIDES,TRUE]);
+llSetLinkPrimitiveParams(animated0, [PRIM_GLOW,ALL_SIDES,glow]);
+llSetLinkPrimitiveParams(animated1, [PRIM_GLOW,ALL_SIDES,glow]);
 }
-string gun_power()
+loop_player_mode(){shoot_sound="X";start_fire="X";shoot_timing=0.1;}
+musicselection(string A) 
 {
-list target = llGetLinkPrimitiveParams(particle2,[PRIM_DESC]);
-if(llList2String(target,0) == "none"){return"[ P̶l̶a̶y̶ ]";}if(gun_power_state == FALSE){return"[ Play ]";}else{return"[ Pause ]";
-}}
-type_option()
-{   
-list target1 =llGetLinkPrimitiveParams(particle2,[PRIM_DESC]);
-llDialog(llGetOwner(),"Music = "+llList2String(target1,0)+"\n",["[ sound ]","[ notecard ]","[ uuid ]","[ exit ]",gun_power(),"[ main ]"],ichannel);
+list items1 = llParseString2List(A, ["="], []);
+if(llList2String(items1,0) == "idle_music"){long_clip_switch = FALSE; idle_music=llList2String(items1,1);}
+if(llList2String(items1,0) == "shoot_sound"){long_clip_switch = FALSE; shoot_sound=llList2String(items1,1);}
+if(llList2String(items1,0) == "start_fire"){long_clip_switch = FALSE; start_fire=llList2String(items1,1);}
+if(llList2String(items1,0) == "shoot_timing"){shoot_timing=llList2Float(items1,1);}
 }
-string check_output(float A){if(.01<=A){return(string)A;}return"OFF";}
-dialog_songmenu(integer page,integer inventory_type)
+rotation meter_animation(integer A)
 {
-    integer slist_size = llGetInventoryNumber(inventory_type);
-    integer pag_amt = llCeil((float)slist_size / 9.0);
-    if(page > pag_amt) page = 1;
-    if(page < 1) page = pag_amt; if(dialog_select_switch == FALSE){cur_page = page;}else{cur_page0 = page;}
-    integer songsonpage;
-    if(page == pag_amt) songsonpage = slist_size % 9;
-    if(songsonpage == 0) songsonpage = 9;
-    integer fspnum = (page*9)-9;
-    list dbuf;
-    integer i;
-    for(; i < songsonpage; ++i)
-    {
-    dbuf += ["Play #" + (string)(fspnum+i)];
-    }
-    list target1 =llGetLinkPrimitiveParams(particle2,[PRIM_DESC]);
-    list snlist = numerizelist(make_list(fspnum,i,inventory_type), fspnum, ". ");
-    llDialog(llGetOwner(),"Music = "+llList2String(target1,0)+"\n\n"+ llDumpList2String(snlist, "\n"),order_buttons(dbuf + ["<<<", "[ ♫ songs ]", ">>>"]),ichannel);
+if(A> 12){return<-0.92388, 0.00000, 0.00000, 0.38269>;}if(A> 11){return<-0.95694, 0.00000, 0.00000, 0.29029>;}
+if(A> 10){return<-0.98078, 0.00000, 0.00000, 0.19510>;}if(A> 9){return<-0.99518, -0.00001, 0.00000, 0.09802>;} 
+if(A> 8){return<-1.00000, 0.00000, 0.00000, 0.00000>;}if(A> 7){return<0.99519, 0.00000, 0.00000, 0.09801>;}   
+if(A> 6){return<0.98079, 0.00000, 0.00000, 0.19508>;}if(A> 5){return<0.95694, 0.00001, 0.00000, 0.29028>;} 
+if(A> 4){return<0.92389, 0.00000, 0.00000, 0.38265>;}if(A> 3){return<-1.00000, -0.00001, 0.00000, 0.00000>;}   
+if(A> 2){return<0.98079, 0.00001, 0.00000, 0.19508>;}if(A> 1){return<0.95694, 0.00000, 0.00000, 0.29028>;}
+return<0.92388, 0.00000, 0.00000, 0.38268>;
 }
-list make_list(integer a,integer b,integer B) 
+gun_animation() 
 {
-  list inventory;integer i;for (i = 0; i < b; ++i)
-  {   
-  string name = llGetInventoryName(B,a+i);
-  if(name == notecardName){inventory += "null";}else{inventory += name;}
-  }return inventory;
+llSetLinkPrimitiveParamsFast(meter,[PRIM_ROT_LOCAL,meter_animation((integer)llFrand(3+(9*gun_shooting)))]);
+llSetLinkPrimitiveParamsFast(turn1,[PRIM_ROT_LOCAL,<(0.05*llFrand(5+(8*gun_shooting))), 0.00000, 0.00000, 1.00000>]);
+llSetLinkPrimitiveParamsFast(turn2,[PRIM_ROT_LOCAL,<(0.05*llFrand(5+(8*gun_shooting))), 0.00000, 0.00000, 1.00000>]);
+llSetLinkPrimitiveParamsFast(turn3,[PRIM_ROT_LOCAL,<(0.05*llFrand(5+(8*gun_shooting))), 0.00000, 0.00000, 1.00000>]);
+llSetLinkPrimitiveParamsFast(slider1,[PRIM_POS_LOCAL,<-0.00383, 0.25589, (0.01*llFrand(1+(1.7*gun_shooting)))+0.03017>]);
+llSetLinkPrimitiveParamsFast(slider2,[PRIM_POS_LOCAL,<-0.00383, 0.27893, (0.01*llFrand(1+(1.7*gun_shooting)))+0.03017>]); 
+llSetLinkPrimitiveParamsFast(slider3,[PRIM_POS_LOCAL,<-0.00383, 0.30148, (0.01*llFrand(1+(1.7*gun_shooting)))+0.01477>]);
+llSetLinkPrimitiveParamsFast(slider4,[PRIM_POS_LOCAL,<-0.00383, 0.32526, (0.01*llFrand(1+(1.7*gun_shooting)))+0.00815>]);
+llSetLinkPrimitiveParamsFast(speaker,[PRIM_POS_LOCAL,<-0.04538,(-(0.005*llFrand(1.5+gun_shooting)))+(-0.41595), -0.06606>]); 
 }
-integer search(string search,integer inventory_type)
+mouse_look_1() 
 {
-  integer Lengthx = llGetInventoryNumber(inventory_type); integer x;
-  for ( ; x < Lengthx; x += 1)
-  {
-    string A = llToLower(search); string B = llToLower(llGetInventoryName(inventory_type, x));
-    integer search_found = ~llSubStringIndex(B,A);
-    if (search_found)
-    {
-    integer Division= x / 9 ; llOwnerSay("[ "+llGetInventoryName(inventory_type,x)+" ] [ page = "+(string)(Division+1)+" list = "+(string)x+" ]");
-    dialog_songmenu(Division+1,inventory_type);
-    return 1;
-} }return 0;}
-search_music(string search)
-{
-if(search(search,INVENTORY_SOUND) == 1){dialog_select_switch = TRUE; return;}
-if(search(search,INVENTORY_NOTECARD) == 1){dialog_select_switch = FALSE; return;}
-llMessageLinked(LINK_THIS, 0,"database_loop="+search,""); return;
+list target =llGetLinkPrimitiveParams(turn2,[PRIM_DESC]);
+list items0 = llParseString2List(llList2String(target,0), ["="], []);
+llSetLinkPrimitiveParamsFast(LINK_THIS,[PRIM_POS_LOCAL,(vector)llList2String(items0,0),PRIM_ROT_LOCAL,(rotation)llList2String(items0,1)]);
+llStopAnimation(animation_hold);
+llStartAnimation(animation_aim);
 }
-option_topmenu()
+mouse_look_0() 
 {
-list item=llGetLinkPrimitiveParams(radius_link,[PRIM_DESC]); list target=llGetLinkPrimitiveParams(speaker,[PRIM_DESC]);
-list targe=llGetLinkPrimitiveParams(slider3,[PRIM_DESC]); list tar=llGetLinkPrimitiveParams(animated1,[PRIM_DESC]);
-integer music_list=(llGetInventoryNumber(INVENTORY_NOTECARD)-1)+llGetInventoryNumber(INVENTORY_SOUND)+(integer)llList2String(tar,0);
-llTextBox(llGetOwner(),
-"\n"+"[ Status ]"+"\n\n"+
-"Sound Radius = "+(string)llDeleteSubString(llList2String(item,0),4,100)+"\n"+
-"Volume = "+(string)llDeleteSubString(llList2String(target,0),4,100)+"\n"+
-"Musics = "+(string)music_list+"\n\n"+
-"[ Command Format ]"+"\n\n"+
-"Search > ( s/music )"+"\n"+
-"Volume > ( v/0.5 )"+"\n"+
-"Radius > ( r/0 )"+"\n",ichannel);
+list target =llGetLinkPrimitiveParams(turn3,[PRIM_DESC]);
+list items0 = llParseString2List(llList2String(target,0), ["="], []);
+llSetLinkPrimitiveParamsFast(LINK_THIS,[PRIM_POS_LOCAL,(vector)llList2String(items0,0),PRIM_ROT_LOCAL,(rotation)llList2String(items0,1)]);
+llStartAnimation(animation_hold);
+llStopAnimation(animation_aim);
+}
+start_shoot()
+{
+charging = 0;    
+mouse_look_1();
+if(long_clip_switch == TRUE){return;}
+llMessageLinked(speaker,0,"play|"+start_fire,""); 
+}
+reset()
+{
+shutdown();
+llSetLinkPrimitiveParamsFast(meter,[PRIM_DESC,"trigger"]);
+llMessageLinked(speaker,0,"stop","");
+llResetScript();
 }
 default
 {
-    changed(integer change)
-    {
-    if(change & CHANGED_INVENTORY){llResetScript();}
-    }
-    on_rez(integer start_param) 
-    {
-    llResetScript();
-    }
+    run_time_permissions(integer perm){if(PERMISSION_TAKE_CONTROLS & perm){llSetTimerEvent(runtime);llTakeControls(0|CONTROL_LBUTTON |CONTROL_ML_LBUTTON,TRUE,FALSE);}}
+    changed(integer change){if(change & CHANGED_INVENTORY){reset();}}
+    on_rez(integer start_param){reset();}
     state_entry()
     {
-    animated1 = getLinkNum("gif2");  
-    slider3 = getLinkNum("slider3");
-    speaker = getLinkNum("speaker");
-    radius_link = getLinkNum("starget");
-    particle1 = getLinkNum("particle1");
-    particle2 = getLinkNum("particle2");
-    llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,"none"]);
-    llRequestPermissions(llGetOwner(),PERMISSION_TAKE_CONTROLS);
+    findlink(); gun_shooting =0;
+    llSetLinkPrimitiveParamsFast(particle1,[PRIM_DESC,""]);
+    llSetLinkTextureAnim(starget, ANIM_ON | LOOP, ALL_SIDES,4,4,0,64,11 );
+    llSetLinkTextureAnim(animated0, ANIM_ON | LOOP, ALL_SIDES,3,6,0,64,6.4 );
+    llSetLinkTextureAnim(animated1, ANIM_ON | LOOP, ALL_SIDES,3,3,0,64,6.4 );
+    llRequestPermissions(llGetOwner(),PERMISSION_TAKE_CONTROLS|PERMISSION_TRIGGER_ANIMATION|PERMISSION_TRACK_CAMERA);
     }
-    run_time_permissions(integer perm)
+    link_message(integer sender_num, integer num, string msg, key id)
     {
-    if(PERMISSION_TAKE_CONTROLS & perm){llTakeControls( CONTROL_BACK|CONTROL_FWD, TRUE, TRUE );}
+    if(msg == "holster")
+    {
+    gun_shooting =0; gun_armed = FALSE;    
+    llStopAnimation(animation_hold); llStopAnimation(animation_aim);
+    list target =llGetLinkPrimitiveParams(turn1,[PRIM_DESC]);
+    list items0 = llParseString2List(llList2String(target,0), ["="], []);
+    llSetLinkPrimitiveParamsFast(LINK_THIS,[PRIM_POS_LOCAL,(vector)llList2String(items0,0),PRIM_ROT_LOCAL,(rotation)llList2String(items0,1)]); 
+    llSetLinkPrimitiveParamsFast(particle1,[PRIM_DESC,""]);
     }
-    link_message(integer source, integer num, string str, key id)
+    if(msg == "drawn")
     {
-      list params = llParseString2List(str, ["|"], []);
-      if(str == "song_request"){random_channel(); type_option();}
-      if(str == "option_request"){random_channel(); option_topmenu();}
-      if(str == "[ Pause ]"){gun_power_state = FALSE;}      
-      if(str == "[ Play ]"){gun_power_state = TRUE;}
-      if(str == "[ Reset ]"){llResetScript();}
-      if(str == "random_request")
-      {
-      integer x = llFloor(llFrand(llGetInventoryNumber(INVENTORY_NOTECARD)));
-      string music_selection = llGetInventoryName(INVENTORY_NOTECARD,x);
-      llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,music_selection]);llMessageLinked(LINK_THIS,0,"erase_data","");
-      llMessageLinked(LINK_THIS, 0,"fetch_note_rationed|"+music_selection,"");
-      llMessageLinked(LINK_THIS, 0,"mainmenu_request","");
-    } }
-    listen(integer chan, string sname, key skey, string text)
+    gun_shooting =0; gun_armed = TRUE;
+    llRequestPermissions(llGetOwner(),PERMISSION_TAKE_CONTROLS|PERMISSION_TRIGGER_ANIMATION|PERMISSION_TRACK_CAMERA);
+    llSetLinkPrimitiveParamsFast(particle1,[PRIM_DESC,""]);
+    }
+    list items1 = llParseString2List(msg, ["|"], []);
+    if(llList2String(items1,1) == "long_clip"){long_clip_switch = TRUE;}
+    if(llList2String(items1,0) == "upload_note"){musicselection(llList2String(items1,1));}
+    if(msg == "[ Reset ]"){llStopAnimation(animation_hold);llStopAnimation(animation_aim);reset();}
+    if(msg == "music_changed"){if(gun_power == TRUE)
     {
-    list target1 =llGetLinkPrimitiveParams(particle1,[PRIM_DESC]); if(llList2String(target1,0) == "shoot"){return;} 
-    list items0 = llParseString2List(text, ["/"], []);
-    if(skey == llGetOwner())
-    {
-          if(text == "[ notecard ]"){dialog_select_switch = FALSE; random_channel(); dialog_songmenu(cur_page,INVENTORY_NOTECARD);}
-          if(text == "[ sound ]"){dialog_select_switch = TRUE; random_channel(); dialog_songmenu(cur_page0,INVENTORY_SOUND);}
-          if(text == "[ Pause ]"){gun_power_state = FALSE; llMessageLinked(LINK_THIS,0,"[ Pause ]_00",""); type_option();}       
-          if(text == "[ Play ]"){gun_power_state = TRUE; llMessageLinked(LINK_THIS,0,"[ Play ]_00",""); type_option();}
-          if(text == "[ main ]"){llMessageLinked(LINK_THIS, 0,"mainmenu_request","");} 
-          if(text == "[ uuid ]"){llMessageLinked(LINK_THIS,0,"[ uuid ]","");}
-          if(text == "[ ♫ songs ]"){random_channel(); type_option();}
-          if(text == "[ P̶l̶a̶y̶ ]"){random_channel(); type_option();}
-          if(llList2String(items0,0) == "s"){search_music(llList2String(items0,1));}
-          if(llList2String(items0,0) == "r")
-          {
-          llSetLinkPrimitiveParamsFast(radius_link,[PRIM_DESC,llDeleteSubString(check_output(llList2Float(items0,1)),4,100)]);
-          llMessageLinked(LINK_THIS,0,"mainmenu_request","");
-          llMessageLinked(speaker,0,"sound_range","");
+    if(long_clip_switch == TRUE){llMessageLinked(LINK_THIS,0,"long_sound_play","");return;}
+    llMessageLinked(speaker,0,"play|"+idle_music,"");}
+    }
+        llSetLinkPrimitiveParamsFast(particle1,[PRIM_DESC,""]);
+        if(msg == "[ Pause ]")
+        {
+          gun_shooting =0; gun_power = FALSE;
+          llMessageLinked(speaker,0,"stop",""); llMessageLinked(speaker,0,"shutdown_sound|"+shutdown_sound,""); 
+          if(long_clip_switch == TRUE){llMessageLinked(LINK_THIS,0,"long_sound_pause",""); shutdown(); return;}
+          shutdown();
           }
-          if(llList2String(items0,0) == "v")
-          {
-          llSetLinkPrimitiveParamsFast(speaker,[PRIM_DESC,llDeleteSubString(check_output(llList2Float(items0,1)),4,100)]);
-          llMessageLinked(LINK_THIS,0,"mainmenu_request","");
-          llMessageLinked(speaker,0,"volume_change|"+(string)llList2Float(items0,1),"");
-          }
-          if(dialog_select_switch == TRUE)
-          {
-            if(text == ">>>") dialog_songmenu(cur_page0+1,INVENTORY_SOUND);
-            if(text == "<<<") dialog_songmenu(cur_page0-1,INVENTORY_SOUND);
-            if(llToLower(llGetSubString(text,0,5)) == "play #")
-            {
-            integer pnum = (integer)llGetSubString(text, 6, -1); string music_selection = llGetInventoryName(INVENTORY_SOUND,pnum);
-            llMessageLinked(LINK_THIS,0,"erase_data","");llMessageLinked(LINK_THIS,0,"fetch_note_rationed|"+music_selection,"");
-            llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,music_selection]);
-            dialog_songmenu(cur_page0,INVENTORY_SOUND);
-          } }
-          if(dialog_select_switch == FALSE)
-          {
-            if(text == ">>>") dialog_songmenu(cur_page+1,INVENTORY_NOTECARD);
-            if(text == "<<<") dialog_songmenu(cur_page-1,INVENTORY_NOTECARD);
-            if(llToLower(llGetSubString(text,0,5)) == "play #")
-            {
-              integer pnum = (integer)llGetSubString(text, 6, -1); 
-              string music_selection = llGetInventoryName(INVENTORY_NOTECARD,pnum); llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,music_selection]);
-              if(music_selection == notecardName){dialog_songmenu(cur_page,INVENTORY_NOTECARD);}else
-              {    
-              llMessageLinked(LINK_THIS,0,"erase_data",""); llMessageLinked(LINK_THIS,0,"fetch_note_rationed|"+music_selection,"");
-              dialog_songmenu(cur_page,INVENTORY_NOTECARD);
-    } } } } } }
+          if(msg == "[ Play ]")
+          { 
+          gun_shooting =0; gun_power = TRUE; 
+          if(long_clip_switch == TRUE){llMessageLinked(LINK_THIS,0,"long_sound_play",""); onpower(); return;}
+          llMessageLinked(speaker,0,"play|"+idle_music,"");
+          onpower();
+        } }
+        control(key id, integer pressed, integer change)
+        {
+        list a =llGetLinkPrimitiveParams(slider4,[PRIM_DESC]);   
+        if(gun_power == TRUE){if(gun_armed == TRUE)
+        {
+          if(llList2String(a,0) == "1"){shoot_sound=idle_music;start_fire="X";shoot_timing=.01;}    
+          if (pressed & ~~change & (CONTROL_ML_LBUTTON)){start_shoot();state shoot_gun;}
+          if (~pressed & change & (CONTROL_LBUTTON)){charging = 0; return;}
+          if (pressed & ~change & (CONTROL_LBUTTON)){++charging; if(charging == 5){start_shoot();state shoot_gun;}}  
+    }  }  }
+    timer()
+    {
+    if(gun_power == TRUE){gun_animation();}if(gun_armed == TRUE)
+    {
+    if(llGetAgentInfo(llGetOwner()) & AGENT_MOUSELOOK){mouse_look_1();}else{mouse_look_0();
+ }}}}
+ state shoot_gun
+ {
+    run_time_permissions(integer perm){if(PERMISSION_TAKE_CONTROLS & perm){llTakeControls(0|CONTROL_LBUTTON |CONTROL_ML_LBUTTON,TRUE,FALSE);}}
+    changed(integer change){if(change & CHANGED_INVENTORY){reset();}}
+    on_rez(integer start_param){reset();}
+    sensor(integer a){gun_animation();}
+    no_sensor(){gun_animation();} 
+    state_entry()
+    {
+    llSetTimerEvent(shoot_timing);
+    llSensorRepeat("", "",AGENT,10, PI,runtime);
+    llRequestPermissions(llGetOwner(),PERMISSION_TAKE_CONTROLS|PERMISSION_TRIGGER_ANIMATION|PERMISSION_TRACK_CAMERA);
+    if(long_clip_switch == TRUE){llMessageLinked(speaker,0,"stop",""); llMessageLinked(LINK_THIS,0,"long_sound_play","");} 
+    }
+    link_message(integer sender_num, integer num, string msg, key id)
+    {
+    list items1 = llParseString2List(msg, ["|"], []);
+    if(llList2String(items1,0) == "start_over"){if(long_clip_switch == TRUE){llSetTimerEvent(llList2Float(items1,1));start_over = TRUE;}}
+    if(msg == "[ Reset ]"){llStopAnimation(animation_hold);llStopAnimation(animation_aim);reset();}
+    }
+    control(key id, integer pressed, integer change)
+    {
+       list target =llGetLinkPrimitiveParams(meter,[PRIM_DESC]);   
+       if(llList2String(target,0) == "toggle")
+       {
+       if (pressed & ~~change & (CONTROL_ML_LBUTTON)){state stop_shoot_gun;}
+       if (pressed & ~~change & (CONTROL_LBUTTON)){state stop_shoot_gun;}
+       }else{
+       if (~pressed & change & (CONTROL_ML_LBUTTON)){state stop_shoot_gun;}
+       if (~pressed & change & (CONTROL_LBUTTON)){state stop_shoot_gun;} 
+     } }
+     timer()
+     {
+     if(start_over == TRUE){llSetLinkPrimitiveParamsFast(particle1,[PRIM_DESC,""]);llSetTimerEvent(shoot_timing);start_over = FALSE;gun_shooting =0;return;}
+     if(long_clip_switch == TRUE)
+     {
+     llSetLinkPrimitiveParamsFast(particle1,[PRIM_DESC,"shoot"]);  
+     llSetTimerEvent(0);
+     gun_shooting =1.5;
+     }else{
+     llMessageLinked(speaker,0,"play|"+shoot_sound,"");
+     llSetLinkPrimitiveParamsFast(particle1,[PRIM_DESC,"shoot"]);
+     llSetTimerEvent(0);
+     gun_shooting =1.5;
+ } } }
+ state stop_shoot_gun
+ {
+    link_message(integer sender_num, integer num, string msg, key id){if(msg == "[ Reset ]"){llStopAnimation(animation_hold);llStopAnimation(animation_aim);reset();}}
+    run_time_permissions(integer perm){if(PERMISSION_TAKE_CONTROLS & perm){llTakeControls(0|CONTROL_LBUTTON |CONTROL_ML_LBUTTON,TRUE,FALSE);}}
+    changed(integer change){if(change & CHANGED_INVENTORY){reset();}}
+    on_rez(integer start_param){reset();}
+    sensor(integer a){gun_animation();}
+    no_sensor(){gun_animation();} 
+    state_entry()
+    {
+    gun_shooting =0;
+    llSetTimerEvent(firing_hold);
+    llSensorRepeat("","",AGENT,10, PI,runtime);
+    llMessageLinked(speaker,0,"play|"+after_sound,"");
+    llSetLinkPrimitiveParamsFast(particle1,[PRIM_DESC,""]);
+    }
+    timer()
+    {
+    if(long_clip_switch == TRUE){llMessageLinked(LINK_THIS,0,"long_sound_play","");}
+    if(long_clip_switch == FALSE){llMessageLinked(speaker,0,"play|"+idle_music,"");}  
+    state default;
+  } }
