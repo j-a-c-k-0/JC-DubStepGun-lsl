@@ -5,22 +5,12 @@ integer cur_page = 1;
 integer chanhandlr;
 integer particle1;
 integer particle2;
-integer animated1;
 integer slider3;
+integer music;
 key notecardQueryId;
 key notecardKey;
 key keyUUID;
-list songlist;
 
-integer getLinkNum(string primName)
-{
-integer primCount = llGetNumberOfPrims();
-integer i;
-for (i=0; i<primCount+1;i++){  
-if (llGetLinkName(i)==primName) return i;
-}
-return FALSE;
-}
 ReadNotecard()
 {
     if (llGetInventoryKey(notecardName) == NULL_KEY)
@@ -31,6 +21,15 @@ ReadNotecard()
     else if (llGetInventoryKey(notecardName) == notecardKey) return;
     notecardKey = llGetInventoryKey(notecardName);
     notecardQueryId = llGetNotecardLine(notecardName, notecardLine);
+}
+integer getLinkNum(string primName)
+{
+integer primCount = llGetNumberOfPrims();
+integer i;
+for (i=0; i<primCount+1;i++){  
+if (llGetLinkName(i)==primName) return i;
+}
+return FALSE;
 }
 list order_buttons(list buttons)
 {
@@ -46,7 +45,7 @@ newlist += [(string)(start + i) + apnd + llList2String(tlist, i)];
 }return newlist;}
 dialog_songmenu(integer page)
 {
-integer slist_size = llGetListLength(songlist);
+integer slist_size = llLinksetDataCountKeys();
 integer pag_amt = llCeil((float)slist_size / 9.0);
 if(page > pag_amt) page = 1;
 else if(page < 1) page = pag_amt;
@@ -62,34 +61,31 @@ dbuf += ["Play #" + (string)(fspnum+i)];
 list snlist = numerizelist(make_list(fspnum,i), fspnum, ". ");
 list target1 =llGetLinkPrimitiveParams(particle2,[PRIM_DESC]);
 llDialog(llGetOwner(),
-"Memory = "+(string)llGetFreeMemory()+"\n"+
 "Music = "+llList2String(target1,0)+"\n\n"+
 llDumpList2String(snlist, "\n"),order_buttons(dbuf + ["<<<", "[ ♫ songs ]", ">>>"]),ichannel);
 }
 list make_list(integer a,integer b) 
 {
-list inventory;
-integer i;
-for (i = 0; i < b; ++i)
-{
-list items = llParseString2List(llList2String(songlist,a+i),["|"],[]);
-inventory += llDeleteSubString(llList2String(items,0),30,1000);
-}
-return inventory;
+  list inventory; integer i;
+  for(i = 0; i < b; ++i)
+  {
+  list items = llParseString2List(llLinksetDataRead("m-"+(string)(a+i)),["|"],[]);
+  inventory += llDeleteSubString(llList2String(items,0),40,1000);
+  }return inventory;
 }
 search_music(string search)
 {
         ichannel = llFloor(llFrand(1000000) - 100000); llListenRemove(chanhandlr); chanhandlr = llListen(ichannel, "", NULL_KEY, "");
-        integer Lengthx = llGetListLength(songlist); integer x;
+        integer Lengthx = llLinksetDataCountKeys()-2; integer x;
         for ( ; x < Lengthx; x += 1)
-        {
-        string A = llToLower(search); string B = llToLower(llList2String(songlist, x));
+        { 
+        string A = llToLower(search); string B = llToLower(llLinksetDataRead("m-"+(string)x));
         integer search_found = ~llSubStringIndex(B,A);
         if (search_found)
         { 
-        list item = llParseString2List(llList2String(songlist, x), ["|"], []);
+        list item = llParseString2List(llLinksetDataRead("m-"+(string)x), ["|"], []);
         integer Division= x / 9 ; llOwnerSay("[ "+llList2String(item,0)+" ] [ page = "+(string)(Division+1)+" list = "+(string)x+" ]");
-        dialog_songmenu(Division+1);
+        dialog_songmenu(Division+1);  
         return;
         }
     }llOwnerSay("Could not find anything");
@@ -114,13 +110,9 @@ default
     }
     state_entry() 
     {
-    ReadNotecard();
-    animated1 = getLinkNum("gif2");
-    slider3 = getLinkNum("slider3");
-    particle1 = getLinkNum("particle1");
-    particle2 = getLinkNum("particle2");
+    llLinksetDataReset(); ReadNotecard(); slider3 = getLinkNum("slider3");
+    particle1 = getLinkNum("particle1"); particle2 = getLinkNum("particle2");
     llRequestPermissions(llGetOwner(),PERMISSION_TAKE_CONTROLS);
-    llSetLinkPrimitiveParamsFast(animated1,[PRIM_DESC,"0"]);
     }
     link_message(integer sender_num, integer num, string msg, key id)
     {
@@ -130,8 +122,8 @@ default
     if(msg == "[ uuid ]"){dialog0();}
     if(msg == "random_music_uuid")
     {
-      integer x = llFloor(llFrand(llGetListLength(songlist))); 
-      list items = llParseString2List(llList2String(songlist,x),["|"],[]); llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,llList2String(items,0)]); 
+      integer x = llFloor(llFrand(llLinksetDataCountKeys()-2)); cur_page = (x/9)+1;   
+      list items = llParseString2List(llLinksetDataRead("m-"+(string)x),["|"],[]); llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,llList2String(items,0)]); 
       llMessageLinked(LINK_THIS,0,"erase_data",""); llMessageLinked(LINK_THIS, 0,"fetch_note_rationed|"+llList2String(items,1),"");
       llMessageLinked(LINK_THIS, 0,"mainmenu_request","");
     } }
@@ -146,7 +138,7 @@ default
         else if(llToLower(llGetSubString(text,0,5)) == "play #")
         {
         integer pnum = (integer)llGetSubString(text, 6, -1);
-        list items = llParseString2List(llList2String(songlist,pnum),["|"],[]); 
+        list items = llParseString2List(llLinksetDataRead("m-"+(string)pnum),["|"],[]); 
         llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,llList2String(items,0)]); llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"2"]); 
         llMessageLinked(LINK_THIS,0,"erase_data",""); llMessageLinked(LINK_THIS, 0,"fetch_note_rationed|"+llList2String(items,1),"");
         dialog0();
@@ -155,8 +147,8 @@ default
     {
         if (query_id == notecardQueryId)
         {
-          if (data == EOF){llSetLinkPrimitiveParamsFast(animated1,[PRIM_DESC,(string)llGetListLength(songlist)]);}else
+          if (data == EOF){ }else
           {
-          songlist += data; ++notecardLine;
-          notecardQueryId = llGetNotecardLine(notecardName, notecardLine);
+          llLinksetDataWrite("m-"+(string)music,data);
+          music = music + 1; ++notecardLine; notecardQueryId = llGetNotecardLine(notecardName, notecardLine);
     } } } }
