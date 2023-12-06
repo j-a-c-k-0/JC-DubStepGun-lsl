@@ -86,7 +86,7 @@ list make_list(integer a,integer b,integer B)
   list inventory;integer i;for (i = 0; i < b; ++i)
   {
   string name = llGetInventoryName(B,a+i);
-  if(name == notecardName){inventory += "null";}else{inventory += llDeleteSubString(name,30,1000);}
+  if(name == notecardName){inventory += "null";}else{inventory += llDeleteSubString(name,40,1000);}
   }return inventory;
 }
 integer search(string search,integer inventory_type)
@@ -110,13 +110,14 @@ llMessageLinked(LINK_THIS, 0,"database_loop="+search,""); return;
 }
 option_topmenu()
 {
+list target=llGetLinkPrimitiveParams(speaker,[PRIM_DESC]);
 list item=llGetLinkPrimitiveParams(radius_link,[PRIM_DESC]); 
-list target=llGetLinkPrimitiveParams(speaker,[PRIM_DESC]); list tar=llGetLinkPrimitiveParams(animated1,[PRIM_DESC]);
-integer music_list=(llGetInventoryNumber(INVENTORY_NOTECARD)-1)+llGetInventoryNumber(INVENTORY_SOUND)+(integer)llList2String(tar,0);
+integer music_list=(llGetInventoryNumber(INVENTORY_NOTECARD)-1)+llGetInventoryNumber(INVENTORY_SOUND)+llLinksetDataCountKeys();
 llTextBox(llGetOwner(),
 "\n"+"[ Status ]"+"\n\n"+
-"Sound Radius = "+(string)llDeleteSubString(llList2String(item,0),4,100)+"\n"+
-"Volume = "+(string)llDeleteSubString(llList2String(target,0),4,100)+"\n"+
+"Memory = "+(string)llLinksetDataAvailable()+"\n"+
+"Sound Radius = "+(string)llDeleteSubString(llList2String(item,0),4,300)+"\n"+
+"Volume = "+(string)llDeleteSubString(llList2String(target,0),4,300)+"\n"+
 "Musics = "+(string)music_list+"\n\n"+
 "[ Command Format ]"+"\n\n"+
 "Search > ( s/music )"+"\n"+
@@ -166,7 +167,7 @@ default
         string music_selection = llGetInventoryName(INVENTORY_SOUND,x);
         llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,music_selection]);llMessageLinked(LINK_THIS,0,"erase_data","");
         llMessageLinked(LINK_THIS,0,"fetch_note_rationed|"+music_selection,"");
-        llMessageLinked(LINK_THIS, 0,"mainmenu_request","");
+        llMessageLinked(LINK_THIS, 0,"mainmenu_request","");cur_page0 = (x/9)+1;
         }
         if(llList2String(c,0) == "1")
         {   
@@ -174,7 +175,7 @@ default
         string music_selection = llGetInventoryName(INVENTORY_NOTECARD,x);
         llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,music_selection]);llMessageLinked(LINK_THIS,0,"erase_data","");
         llMessageLinked(LINK_THIS, 0,"fetch_note_rationed|"+music_selection,"");
-        llMessageLinked(LINK_THIS, 0,"mainmenu_request","");
+        llMessageLinked(LINK_THIS, 0,"mainmenu_request","");cur_page = (x/9)+1;
     } } }
     listen(integer chan, string sname, key skey, string text)
     {
@@ -216,13 +217,13 @@ default
           if(llList2String(items0,0) == "s"){search_music(llList2String(items0,1));}
           if(llList2String(items0,0) == "r")
           {
-          llSetLinkPrimitiveParamsFast(radius_link,[PRIM_DESC,llDeleteSubString(check_output(llList2Float(items0,1)),4,100)]);
+          llSetLinkPrimitiveParamsFast(radius_link,[PRIM_DESC,llDeleteSubString(check_output(llList2Float(items0,1)),4,300)]);
           llMessageLinked(LINK_THIS,0,"mainmenu_request","");
           llMessageLinked(speaker,0,"sound_range","");
           }
           if(llList2String(items0,0) == "v")
           {
-          llSetLinkPrimitiveParamsFast(speaker,[PRIM_DESC,llDeleteSubString(check_output(llList2Float(items0,1)),4,100)]);
+          llSetLinkPrimitiveParamsFast(speaker,[PRIM_DESC,llDeleteSubString(check_output(llList2Float(items0,1)),4,300)]);
           llMessageLinked(LINK_THIS,0,"mainmenu_request","");
           llMessageLinked(speaker,0,"volume_change|"+(string)llList2Float(items0,1),"");
           }
