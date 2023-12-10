@@ -76,7 +76,7 @@ list make_list(integer a,integer b)
 search_music(string search)
 {
         ichannel = llFloor(llFrand(1000000) - 100000); llListenRemove(chanhandlr); chanhandlr = llListen(ichannel, "", NULL_KEY, "");
-        integer Lengthx = llLinksetDataCountKeys()-2; integer x;
+        integer Lengthx = llLinksetDataCountKeys(); integer x;
         for ( ; x < Lengthx; x += 1)
         { 
         string A = llToLower(search); string B = llToLower(llLinksetDataRead("m-"+(string)x));
@@ -122,7 +122,7 @@ default
     if(msg == "[ uuid ]"){dialog0();}
     if(msg == "random_music_uuid")
     {
-      integer x = llFloor(llFrand(llLinksetDataCountKeys()-2)); cur_page = (x/9)+1;   
+      integer x = llFloor(llFrand(llLinksetDataCountKeys())); cur_page = (x/9)+1;   
       list items = llParseString2List(llLinksetDataRead("m-"+(string)x),["|"],[]); llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,llList2String(items,0)]); 
       llMessageLinked(LINK_THIS,0,"erase_data",""); llMessageLinked(LINK_THIS, 0,"fetch_note_rationed|"+llList2String(items,1),"");
       llMessageLinked(LINK_THIS, 0,"mainmenu_request","");
