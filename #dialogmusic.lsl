@@ -104,8 +104,8 @@ integer search(string search,integer inventory_type)
 } }return 0;}
 search_music(string search)
 {
-if(search(search,INVENTORY_SOUND) == 1){dialog_select_switch = TRUE; return;}
-if(search(search,INVENTORY_NOTECARD) == 1){dialog_select_switch = FALSE; return;}
+dialog_select_switch = TRUE;if(search(search,INVENTORY_SOUND) == 1){return;}
+dialog_select_switch = FALSE;if(search(search,INVENTORY_NOTECARD) == 1){return;}
 llMessageLinked(LINK_THIS, 0,"database_loop="+search,""); return;
 }
 option_topmenu()
