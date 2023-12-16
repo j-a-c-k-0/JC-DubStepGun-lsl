@@ -120,6 +120,13 @@ default
     if(llList2String(items,0) == "database_loop"){search_music(llList2String(items,1));}
     if(msg == "[ Reset ]"){llResetScript();}
     if(msg == "[ uuid ]"){dialog0();}
+    if(msg == "random_music_uuid_T")
+    {
+      integer x = llFloor(llFrand(llLinksetDataCountKeys())); cur_page = (x/9)+1;   
+      list items = llParseString2List(llLinksetDataRead("m-"+(string)x),["|"],[]); llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,llList2String(items,0)]); 
+      llMessageLinked(LINK_THIS,0,"erase_data",""); llMessageLinked(LINK_THIS, 0,"fetch_note_rationed|"+llList2String(items,1),"");
+      llMessageLinked(LINK_THIS, 0,"song_request","");
+    }
     if(msg == "random_music_uuid")
     {
       integer x = llFloor(llFrand(llLinksetDataCountKeys())); cur_page = (x/9)+1;   
