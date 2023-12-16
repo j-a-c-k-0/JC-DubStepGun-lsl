@@ -6,6 +6,7 @@ integer charging= 0;
 integer animated0;
 integer animated1;
 integer particle1;
+integer particle0;
 integer speaker;
 integer starget;
 integer slider1;
@@ -59,9 +60,13 @@ slider2 = getLinkNum("slider2");
 slider3 = getLinkNum("slider3");
 slider4 = getLinkNum("slider4");
 particle1 = getLinkNum("particle1");
+particle0 = getLinkNum("particle0");
 }
 shutdown() 
 {
+list target =llGetLinkPrimitiveParams(particle0,[PRIM_POS_LOCAL]);
+list tar =llGetLinkPrimitiveParams(animated1,[PRIM_POS_LOCAL,PRIM_SIZE]);    
+vector ovF = llList2Vector(tar,1); float x = ovF.y; float n = ovF.z;
 llSetLinkPrimitiveParams(gun, [PRIM_GLOW,0,0,PRIM_FULLBRIGHT,0,FALSE]);   
 llSetLinkAlpha(starget,0, ALL_SIDES);  
 llSetLinkAlpha(animated0,0, ALL_SIDES);
@@ -73,11 +78,11 @@ llSetLinkPrimitiveParams(animated1, [PRIM_GLOW,ALL_SIDES,0]);
 llSetLinkPrimitiveParamsFast(turn1,[PRIM_ROT_LOCAL,<0.00000, 0.00000, 0.00000, 1.00000>]);
 llSetLinkPrimitiveParamsFast(turn2,[PRIM_ROT_LOCAL,<0.00000, 0.00000, 0.00000, 1.00000>]);
 llSetLinkPrimitiveParamsFast(turn3,[PRIM_ROT_LOCAL,<0.00000, 0.00000, 0.00000, 1.00000>]);
-llSetLinkPrimitiveParamsFast(speaker,[PRIM_POS_LOCAL,<-0.04538, -0.41595, -0.06606>]);
-llSetLinkPrimitiveParamsFast(slider1,[PRIM_POS_LOCAL,<-0.00383, 0.25589, 0.03017>]);
-llSetLinkPrimitiveParamsFast(slider2,[PRIM_POS_LOCAL,<-0.00383, 0.27893, 0.03018>]);
-llSetLinkPrimitiveParamsFast(slider3,[PRIM_POS_LOCAL,<-0.00383, 0.30148, 0.01477>]);
-llSetLinkPrimitiveParamsFast(slider4,[PRIM_POS_LOCAL,<-0.00383, 0.32526, 0.00815>]);
+llSetLinkPrimitiveParamsFast(speaker,[PRIM_POS_LOCAL,llList2Vector(target,0)]); 
+llSetLinkPrimitiveParamsFast(slider1,[PRIM_POS_LOCAL,llList2Vector(tar,0)+<0,-(x*1.90),-(n*0.1)>]);
+llSetLinkPrimitiveParamsFast(slider2,[PRIM_POS_LOCAL,llList2Vector(tar,0)+<0,-(x*1.58),-(n*0.1)>]);
+llSetLinkPrimitiveParamsFast(slider3,[PRIM_POS_LOCAL,llList2Vector(tar,0)+<0,-(x*1.255),-(n*0.3)>]);
+llSetLinkPrimitiveParamsFast(slider4,[PRIM_POS_LOCAL,llList2Vector(tar,0)+<0,-(x*.92),-(n*0.4)>]);
 llSetLinkPrimitiveParams(vinyl,[PRIM_OMEGA, <0,0,0>,0,0]);
 }
 onpower() 
@@ -113,15 +118,18 @@ return<0.92388, 0.00000, 0.00000, 0.38268>;
 }
 gun_animation() 
 {
+list tar =llGetLinkPrimitiveParams(animated1,[PRIM_POS_LOCAL,PRIM_SIZE]);
+list target =llGetLinkPrimitiveParams(particle0,[PRIM_POS_LOCAL,PRIM_SIZE]);
+vector ovF = llList2Vector(target,1); float x = 0.1*ovF.z; vector ov = llList2Vector(tar,1); float b = ov.y; float k = ov.z;
 llSetLinkPrimitiveParamsFast(meter,[PRIM_ROT_LOCAL,meter_animation((integer)llFrand(3+(9*gun_shooting)))]);
 llSetLinkPrimitiveParamsFast(turn1,[PRIM_ROT_LOCAL,<(0.05*llFrand(5+(8*gun_shooting))), 0.00000, 0.00000, 1.00000>]);
 llSetLinkPrimitiveParamsFast(turn2,[PRIM_ROT_LOCAL,<(0.05*llFrand(5+(8*gun_shooting))), 0.00000, 0.00000, 1.00000>]);
 llSetLinkPrimitiveParamsFast(turn3,[PRIM_ROT_LOCAL,<(0.05*llFrand(5+(8*gun_shooting))), 0.00000, 0.00000, 1.00000>]);
-llSetLinkPrimitiveParamsFast(slider1,[PRIM_POS_LOCAL,<-0.00383, 0.25589, (0.01*llFrand(1+(1.7*gun_shooting)))+0.03017>]);
-llSetLinkPrimitiveParamsFast(slider2,[PRIM_POS_LOCAL,<-0.00383, 0.27893, (0.01*llFrand(1+(1.7*gun_shooting)))+0.03017>]); 
-llSetLinkPrimitiveParamsFast(slider3,[PRIM_POS_LOCAL,<-0.00383, 0.30148, (0.01*llFrand(1+(1.7*gun_shooting)))+0.01477>]);
-llSetLinkPrimitiveParamsFast(slider4,[PRIM_POS_LOCAL,<-0.00383, 0.32526, (0.01*llFrand(1+(1.7*gun_shooting)))+0.00815>]);
-llSetLinkPrimitiveParamsFast(speaker,[PRIM_POS_LOCAL,<-0.04538,(-(0.005*llFrand(1.5+gun_shooting)))+(-0.41595), -0.06606>]); 
+llSetLinkPrimitiveParamsFast(slider1,[PRIM_POS_LOCAL,llList2Vector(tar,0)+<0,-(b*1.90),-(k*0.1)+(k*llFrand(0.1+(0.2*gun_shooting)))>]);
+llSetLinkPrimitiveParamsFast(slider2,[PRIM_POS_LOCAL,llList2Vector(tar,0)+<0,-(b*1.58),-(k*0.1)+(k*llFrand(0.1+(0.2*gun_shooting)))>]);
+llSetLinkPrimitiveParamsFast(slider3,[PRIM_POS_LOCAL,llList2Vector(tar,0)+<0,-(b*1.255),-(k*0.3)+(k*llFrand(0.1+(0.2*gun_shooting)))>]);
+llSetLinkPrimitiveParamsFast(slider4,[PRIM_POS_LOCAL,llList2Vector(tar,0)+<0,-(b*.92),-(k*0.4)+(k*llFrand(0.1+(0.2*gun_shooting)))>]);
+llSetLinkPrimitiveParamsFast(speaker,[PRIM_POS_LOCAL,llList2Vector(target,0)+<0,(x*llFrand(0.5+(0.3*gun_shooting))),0>]); 
 }
 mouse_look_1() 
 {
