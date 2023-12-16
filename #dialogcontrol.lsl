@@ -58,7 +58,7 @@ llSetLinkPrimitiveParamsFast(meter,[PRIM_DESC,"trigger"]);
 list target=llGetLinkPrimitiveParams(turn1,[PRIM_DESC]);
 list items0=llParseString2List(llList2String(target,0),["="],[]);
 llSetLinkPrimitiveParamsFast(LINK_THIS,[PRIM_POS_LOCAL,(vector)llList2String(items0,0),PRIM_ROT_LOCAL
-,(rotation)llList2String(items0,1),PRIM_TEXT,"",llGetColor(ALL_SIDES),0,PRIM_SIZE,<0,0,0>]);
+,(rotation)llList2String(items0,1),PRIM_TEXT,"",llGetColor(ALL_SIDES),0]);
 llRequestPermissions(llGetOwner(),PERMISSION_TAKE_CONTROLS|PERMISSION_TRIGGER_ANIMATION);
 }
 integer getLinkNum(string primName)
@@ -119,8 +119,8 @@ string gun_holster_D(){if(gun_holster == FALSE){return"[ ⚠️ drawn ]";}else{r
 string gun_power()
 {
 list target = llGetLinkPrimitiveParams(particle2,[PRIM_DESC]);
-if(llList2String(target,0) == "none"){return"[ P̶l̶a̶y̶ ]";}   
-if(gun_power_state == FALSE){return"[ Play ]";}else{return"[ Pause ]";}
+if(llList2String(target,0) == "none"){return"[ ♫ P̶l̶a̶y̶ ]";}   
+if(gun_power_state == FALSE){return"[ ♫ Play ]";}else{return"[ ♫ Pause ]";}
 }
 string sound_type_0()
 {
@@ -137,12 +137,12 @@ llDialog(llGetOwner(),
 "Bullet = "+llList2String(target0,0)+"\n"+
 "Sound Type = "+sound_type_0()+"\n"+
 "Music = "+llList2String(target1,0),
-["[ ⚙ setting ]","[ ♫ random ]","[ ⦿ wub ]","[ 🛠️️ option ]","[ ♫ songs ]",gun_holster_D(),"[ exit ]",gun_power(),firing_option()],ichannel);
+["[ ⚙ setting ]","[ ♫ random ]","[ ⦿ wub ]","[ 🛠️️ option ]","[ ♫ songs ]",gun_holster_D(),"[ ✖️ exit ]",gun_power(),firing_option()],ichannel);
 }
 dialog_option()
 {
 llDialog(llGetOwner(),"option"+"\n\n"
-,["[ 🖌️ texture ]","[ 🔧 adjust ]","[ ⟳ reset ]","[ exit ]","[ main ]","[ ⚙ setting ]"],ichannel);
+,["[ 🖌️ texture ]","[ 🔧 adjust ]","[ ⟳ reset ]","[ ✖️ exit ]","[ ← main ]","[ ⚙ setting ]"],ichannel);
 }
 bullet_option_dialog()
 {
@@ -165,7 +165,7 @@ dialog_bullet_option(integer page)
     }
     list target =llGetLinkPrimitiveParams(particle0,[PRIM_DESC]);
     list snlist = numerizelist(llList2List(bullet_option_list, fspnum, (page*9)-1), fspnum, ". ");
-    llDialog(llGetOwner(),"Bullet = "+llList2String(target,0)+"\n\n"+ llDumpList2String(snlist,"\n"),order_buttons(dbuf + ["<<<", "[ main ]", ">>>"]),ichannel);
+    llDialog(llGetOwner(),"Bullet = "+llList2String(target,0)+"\n\n"+ llDumpList2String(snlist,"\n"),order_buttons(dbuf + ["<<<", "[ ← main ]", ">>>"]),ichannel);
 }
 dialog_texturemenu(integer page)
 {
@@ -183,7 +183,7 @@ dialog_texturemenu(integer page)
     dbuf += ["Text #" + (string)(fspnum+i)];
     }
     list snlist = numerizelist(make_list(fspnum,i), fspnum, ". ");
-    llDialog(llGetOwner(),"choose an theme"+"\n\n"+ llDumpList2String(snlist,"\n"),order_buttons(dbuf + ["<<<", "[ main ]", ">>>"]),ichannel);
+    llDialog(llGetOwner(),"choose an theme"+"\n\n"+ llDumpList2String(snlist,"\n"),order_buttons(dbuf + ["<<<", "[ ← main ]", ">>>"]),ichannel);
 }
 list make_list(integer a,integer b) 
 {
@@ -248,8 +248,8 @@ default
     {
        if(text == "[ ⌥ trigger ]"){gun_firing_mode = TRUE;llSetLinkPrimitiveParamsFast(meter,[PRIM_DESC,"toggle"]);dialog_topmenu();}
        if(text == "[ ⎇ toggle ]"){gun_firing_mode = FALSE;llSetLinkPrimitiveParamsFast(meter,[PRIM_DESC,"trigger"]);dialog_topmenu();}
-       if(text == "[ Play ]"){gun_power_state = TRUE; llMessageLinked(LINK_THIS, 0,"[ Play ]",""); dialog_topmenu();} 
-       if(text == "[ Pause ]"){gun_power_state = FALSE; llMessageLinked(LINK_THIS, 0,"[ Pause ]",""); dialog_topmenu();} 
+       if(text == "[ ♫ Play ]"){gun_power_state = TRUE; llMessageLinked(LINK_THIS, 0,"[ Play ]",""); dialog_topmenu();} 
+       if(text == "[ ♫ Pause ]"){gun_power_state = FALSE; llMessageLinked(LINK_THIS, 0,"[ Pause ]",""); dialog_topmenu();} 
        if(text == "[ ⛔ holster ]"){gun_holster = FALSE; llMessageLinked(LINK_THIS, 0,"holster",""); dialog_topmenu();}   
        if(text == "[ ⚠️ drawn ]"){gun_holster = TRUE; llMessageLinked(LINK_THIS, 0,"drawn",""); dialog_topmenu();}
        if(text == "[ ⚙ setting ]"){llMessageLinked(LINK_THIS, 0,"option_request","");}
@@ -259,8 +259,8 @@ default
        if(text == "[ 🖌️ texture ]"){dialog_select_switch = TRUE; dialog_texturemenu(texture_cur_page);}
        if(text == "[ ⦿ wub ]"){dialog_select_switch = FALSE; bullet_option_dialog();}
        if(text == "[ 🛠️️ option ]"){dialog_option();}
-       if(text == "[ main ]"){dialog_topmenu();}
-       if(text == "[ P̶l̶a̶y̶ ]"){dialog_topmenu();}
+       if(text == "[ ← main ]"){dialog_topmenu();}
+       if(text == "[ ♫ P̶l̶a̶y̶ ]"){dialog_topmenu();}
        if(text == "[ ♫ random ]")
        {
        list c = llGetLinkPrimitiveParams(slider3,[PRIM_DESC]);
@@ -303,7 +303,7 @@ default
     llSetLinkPrimitiveParamsFast(particle1,[PRIM_DESC,""]);
     llRequestPermissions(llGetOwner(),PERMISSION_TAKE_CONTROLS|PERMISSION_TRIGGER_ANIMATION);
     llSetLinkPrimitiveParamsFast(LINK_THIS,[PRIM_TEXT,message_adjustment+"\n"+"time : "+(string)(adjust_time-counter)+"\n|"+"\nV",
-    llGetColor(ALL_SIDES),1,PRIM_SIZE,<0.33775, 1.00000, 0.55493>]);
+    llGetColor(ALL_SIDES),1]);
     }
     run_time_permissions(integer perm)
     {
@@ -353,7 +353,7 @@ default
     llStopAnimation(animation_hold); llStopAnimation(animation_aim);
     list items0 = llParseString2List(default_positions1, ["="], []);
     llSetLinkPrimitiveParamsFast(LINK_THIS,[PRIM_POS_LOCAL,(vector)llList2String(items0,0),PRIM_ROT_LOCAL,(rotation)llList2String(items0,1),
-    PRIM_TEXT,"", llGetColor(ALL_SIDES),0,PRIM_SIZE,<0,0,0>]); state default;
+    PRIM_TEXT,"", llGetColor(ALL_SIDES),0]); state default;
     }else{
     llSetLinkPrimitiveParamsFast(LINK_THIS,[PRIM_TEXT,message_adjustment+"\n"+"time : "+(string)(adjust_time-counter)+"\n|"+"\nV", llGetColor(ALL_SIDES),1]);
     counter = counter + 1;
