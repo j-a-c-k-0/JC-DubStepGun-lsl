@@ -1,3 +1,9 @@
+@OliverTreeHurt
+shoot_timing=2.1
+idle_music=7d651f4a-83c5-5eee-5ef2-912cab7424dc
+start_fire=b16cf85e-96e2-20bb-3a57-bde278e7135a
+shoot_sound=8230b365-01fd-93cb-29cc-168fd703fe3e
+
 @TheFinalDestination
 shoot_timing=0.9
 idle_music=87cf1ad3-f253-c93e-3813-ca9be380764d
