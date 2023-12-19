@@ -1,3 +1,15 @@
+@Bidibodibidibu
+shoot_timing=3.1
+idle_music=5e3e0760-f6d1-80a1-92f0-ba807168eb13
+start_fire=718db4b7-4ac9-d925-0136-ab0cd56b88f9
+shoot_sound=186cbaaa-f076-3396-3b64-398c4ad49b51
+
+@MeaningofLife
+shoot_timing=2.0
+idle_music=2200bcb9-b873-3653-93ef-2694d1c8412e
+start_fire=f9086d78-13a8-57f6-d78f-83fc2b5408e6
+shoot_sound=01823115-2950-caf9-d36b-1f4b7b5b0844
+
 @OliverTreeHurt
 shoot_timing=2.1
 idle_music=7d651f4a-83c5-5eee-5ef2-912cab7424dc
