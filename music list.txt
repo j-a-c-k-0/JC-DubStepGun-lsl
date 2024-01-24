@@ -1,3 +1,9 @@
+@SynapsonHideAway
+shoot_timing=2.0
+idle_music=759c66ed-ae51-01b9-94c0-d59baddc3ea4
+start_fire=c93ddb74-7c5b-374c-fa5a-5ea59b59c805
+shoot_sound=94eb7a86-3333-561f-e497-4b0265ef3191
+
 @Bidibodibidibu
 shoot_timing=3.1
 idle_music=5e3e0760-f6d1-80a1-92f0-ba807168eb13
