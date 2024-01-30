@@ -1,3 +1,9 @@
+@TATU-AllTheThingsSheSaid
+shoot_timing=2.1
+idle_music=d7533492-2617-38f8-97e4-111cd28dc6d8
+start_fire=76c8ae1e-9382-9e89-4fac-830315c12439
+shoot_sound=08736e19-6de0-1536-0fc5-e4de3a5dd79a
+
 @SynapsonHideAway
 shoot_timing=2.0
 idle_music=759c66ed-ae51-01b9-94c0-d59baddc3ea4
