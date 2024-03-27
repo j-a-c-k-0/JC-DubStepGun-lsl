@@ -15,18 +15,17 @@ return FALSE;
 }
 integer readnote(string notename)
 {
-  note_name = notename;
-  if (llGetInventoryType(note_name) == INVENTORY_SOUND)
+  if (llGetInventoryType(notename) == INVENTORY_SOUND)
   {
-  llMessageLinked(LINK_THIS,0,"upload_note|idle_music=" +(string)llGetInventoryKey(note_name),"");
+  llMessageLinked(LINK_THIS,0,"upload_note|idle_music=" +(string)llGetInventoryKey(notename),"");
   llSetLinkPrimitiveParamsFast(slider4,[PRIM_DESC,"1"]);
   return 2;
   }
-  if (llGetInventoryType(note_name) == INVENTORY_NOTECARD)
+  if (llGetInventoryType(notename) == INVENTORY_NOTECARD)
   {
-  intLine1 = 0;
-  keyConfigQueryhandle = llGetNotecardLine(note_name, intLine1);
-  keyConfigUUID = llGetInventoryKey(note_name);
+  note_name = notename; intLine1 = 0;
+  keyConfigQueryhandle = llGetNotecardLine(notename, intLine1);
+  keyConfigUUID = llGetInventoryKey(notename);
   llSetLinkPrimitiveParamsFast(slider4,[PRIM_DESC,"0"]);
   return 1;
   }
