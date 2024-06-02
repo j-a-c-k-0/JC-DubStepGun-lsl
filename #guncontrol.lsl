@@ -21,12 +21,13 @@ integer turn2;
 integer turn3;
 integer gun;
 
+float cool_down = 0.5;
 float runtime = 0.1;
 float gun_shooting;
 float glow = 0.2;
 
-string shutdown_sound = "82822418-cce5-8bc6-a1cb-7449b40b005e";
 string after_fire_sound = "ba948a2d-84e3-f033-65f6-268512e6a0b1";
+string shutdown_sound = "82822418-cce5-8bc6-a1cb-7449b40b005e";
 string animation_hold = "[Hold]";
 string animation_aim = "[Aim]";
 string shoot_sound;
@@ -150,8 +151,9 @@ llStopAnimation(animation_aim);
 }
 gun_sound(string A)
 {
-list items1 =llGetLinkPrimitiveParams(speaker,[PRIM_DESC]);
+llStopSound();
 list items0 =llGetLinkPrimitiveParams(radius_link,[PRIM_DESC]);
+list items1 =llGetLinkPrimitiveParams(speaker,[PRIM_DESC]);
 llLinkSetSoundRadius(LINK_THIS,llList2Float(items0,0));
 if((key)A){llPlaySound(A,llList2Float(items1,0));}
 }
@@ -238,17 +240,17 @@ default
         list a =llGetLinkPrimitiveParams(slider4,[PRIM_DESC]);   
         if(gun_power == TRUE){if(gun_armed == TRUE)
         {
-          if(llList2String(a,0) == "1"){shoot_sound=idle_music;start_fire="X";shoot_timing=.01;}    
-          if (pressed & ~~change & (CONTROL_ML_LBUTTON)){start_shoot();state shoot_gun;}
-          if (~pressed & change & (CONTROL_LBUTTON)){charging = 0; return;}
-          if (pressed & ~change & (CONTROL_LBUTTON)){++charging; if(charging == 5){start_shoot();state shoot_gun;}}  
-    }  }  }
-    timer()
-    {
-    if(gun_power == TRUE){gun_animation();}if(gun_armed == TRUE)
-    {
-    if(llGetAgentInfo(llGetOwner()) & AGENT_MOUSELOOK){mouse_look_1();}else{mouse_look_0();
- }}}}
+           if(llList2String(a,0) == "1"){shoot_sound=idle_music;start_fire="X";shoot_timing=.01;}    
+           if (pressed & ~~change & (CONTROL_ML_LBUTTON)){start_shoot();state shoot_gun;}
+           if (~pressed & change & (CONTROL_LBUTTON)){charging = 0; return;}
+           if (pressed & ~change & (CONTROL_LBUTTON)){++charging; if(charging == 5){start_shoot();state shoot_gun;}}  
+     }  }  }
+     timer()
+     {
+     if(gun_power == TRUE){gun_animation();}if(gun_armed == TRUE)
+     {
+     if(llGetAgentInfo(llGetOwner()) & AGENT_MOUSELOOK){mouse_look_1();}else{mouse_look_0();}
+ } } }
  state shoot_gun
  {
     run_time_permissions(integer perm){if(PERMISSION_TAKE_CONTROLS & perm){llTakeControls(0|CONTROL_LBUTTON |CONTROL_ML_LBUTTON,TRUE,FALSE);}}
@@ -274,11 +276,11 @@ default
        list target =llGetLinkPrimitiveParams(meter,[PRIM_DESC]);   
        if(llList2String(target,0) == "toggle")
        {
-       if (pressed & ~~change & (CONTROL_ML_LBUTTON)){stop_shoot();state default;}
-       if (pressed & ~~change & (CONTROL_LBUTTON)){stop_shoot();state default;}
+       if (pressed & ~~change & (CONTROL_ML_LBUTTON)){state stop_shoot_gun;}
+       if (pressed & ~~change & (CONTROL_LBUTTON)){state stop_shoot_gun;}
        }else{
-       if (~pressed & change & (CONTROL_ML_LBUTTON)){stop_shoot();state default;}
-       if (~pressed & change & (CONTROL_LBUTTON)){stop_shoot();state default;} 
+       if (~pressed & change & (CONTROL_ML_LBUTTON)){state stop_shoot_gun;}
+       if (~pressed & change & (CONTROL_LBUTTON)){state stop_shoot_gun;} 
      } }
      timer()
      {
@@ -294,3 +296,20 @@ default
      llSetTimerEvent(0);
      gun_shooting =1.5;
  } } }
+ state stop_shoot_gun
+ {
+    link_message(integer sender_num, integer num, string msg, key id){if(msg == "[ Reset ]"){llStopAnimation(animation_hold);llStopAnimation(animation_aim);reset();}}
+    changed(integer change){if(change & CHANGED_INVENTORY){reset();}}
+    on_rez(integer start_param){reset();}
+    sensor(integer a){gun_animation();}
+    no_sensor(){gun_animation();} 
+    state_entry()
+    {
+    stop_shoot();
+    llSetTimerEvent(cool_down);
+    llSensorRepeat("","",AGENT,10, PI,runtime);
+    }
+    timer()
+    {
+    state default;
+  } }
