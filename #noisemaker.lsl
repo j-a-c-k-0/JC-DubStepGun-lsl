@@ -28,7 +28,6 @@ default
   list items = llParseString2List(str, ["|"], []);
   list items0 =llGetLinkPrimitiveParams(radius_link,[PRIM_DESC]);
   llLinkSetSoundRadius(LINK_THIS,llList2Float(items0,0));
-  if(llList2String(items,0) == "play_one"){llPlaySound(llList2String(items,1),(float)llGetObjectDesc());}
   if(llList2String(items,0) == "play_long"){length_mode_sound(llList2Float(items,2),llList2String(items,1));}
   if(llList2String(items,0) == "sound_range"){llLinkSetSoundRadius(LINK_THIS,llList2Float(items0,0));}
   if(llList2String(items,0) == "volume_change"){llAdjustSoundVolume(llList2Float(items,1));}
