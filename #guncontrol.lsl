@@ -2,7 +2,7 @@ integer long_clip_switch = FALSE;
 integer start_over = FALSE;
 integer gun_armed = FALSE;
 integer gun_power = FALSE;
-integer charging= 0;
+integer charging = 0;
 integer radius_link;
 integer animated0;
 integer animated1;
@@ -21,7 +21,6 @@ integer turn2;
 integer turn3;
 integer gun;
 
-float firing_hold = 0.2;
 float runtime = 0.1;
 float gun_shooting;
 float glow = 0.2;
