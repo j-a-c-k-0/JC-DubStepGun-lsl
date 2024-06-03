@@ -157,15 +157,6 @@ list items1 =llGetLinkPrimitiveParams(speaker,[PRIM_DESC]);
 llLinkSetSoundRadius(LINK_THIS,llList2Float(items0,0));
 if((key)A){llPlaySound(A,llList2Float(items1,0));}
 }
-stop_shoot()
-{
-gun_shooting =0;
-gun_sound(after_fire_sound);
-llMessageLinked(speaker,0,"stop","");
-llSetLinkPrimitiveParamsFast(particle1,[PRIM_DESC,""]);
-if(long_clip_switch == TRUE){llMessageLinked(LINK_THIS,0,"long_sound_play","");}
-if(long_clip_switch == FALSE){llMessageLinked(speaker,0,"play|"+idle_music,"");}
-}
 start_shoot()
 {
 charging = 0;    
@@ -188,6 +179,7 @@ default
     state_entry()
     {
     findlink(); gun_shooting =0;
+    llLinkSetSoundQueueing(LINK_THIS,FALSE);
     llSetLinkPrimitiveParamsFast(particle1,[PRIM_DESC,""]);
     llSetLinkTextureAnim(starget, ANIM_ON | LOOP, ALL_SIDES,4,4,0,64,11 );
     llSetLinkTextureAnim(animated0, ANIM_ON | LOOP, ALL_SIDES,3,6,0,64,6.4 );
@@ -260,6 +252,7 @@ default
     no_sensor(){gun_animation();} 
     state_entry()
     {
+    llStopSound();    
     llSetTimerEvent(shoot_timing);
     llSensorRepeat("", "",AGENT,10, PI,runtime);
     llRequestPermissions(llGetOwner(),PERMISSION_TAKE_CONTROLS|PERMISSION_TRIGGER_ANIMATION|PERMISSION_TRACK_CAMERA);
@@ -283,14 +276,14 @@ default
        if (~pressed & change & (CONTROL_LBUTTON)){state stop_shoot_gun;} 
      } }
      timer()
-     {
+     {   
      if(start_over == TRUE){llSetLinkPrimitiveParamsFast(particle1,[PRIM_DESC,""]);llSetTimerEvent(shoot_timing);start_over = FALSE;gun_shooting =0;return;}
      if(long_clip_switch == TRUE)
      {
      llSetLinkPrimitiveParamsFast(particle1,[PRIM_DESC,"shoot"]);  
      llSetTimerEvent(0);
      gun_shooting =1.5;
-     }else{
+     }else{   
      llMessageLinked(speaker,0,"play|"+shoot_sound,"");
      llSetLinkPrimitiveParamsFast(particle1,[PRIM_DESC,"shoot"]);
      llSetTimerEvent(0);
@@ -305,11 +298,16 @@ default
     no_sensor(){gun_animation();} 
     state_entry()
     {
-    stop_shoot();
+    gun_shooting =0;
     llSetTimerEvent(cool_down);
+    gun_sound(after_fire_sound);
+    llMessageLinked(speaker,0,"stop","");
     llSensorRepeat("","",AGENT,10, PI,runtime);
+    llSetLinkPrimitiveParamsFast(particle1,[PRIM_DESC,""]);
     }
     timer()
     {
+    if(long_clip_switch == TRUE){llMessageLinked(LINK_THIS,0,"long_sound_play","");}
+    if(long_clip_switch == FALSE){llMessageLinked(speaker,0,"play|"+idle_music,"");}   
     state default;
   } }
