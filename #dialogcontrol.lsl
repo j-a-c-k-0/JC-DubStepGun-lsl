@@ -1,7 +1,7 @@
 list bullet_option_list=["Default_Wub","Collision_Wub","ExLarge_Shockwave","Large_Shockwave","Medium_Shockwave","Small_Shockwave","None"];
-string default_positions1 = "<-0.00056, 0.15325, -0.32694>=<0.65328, 0.27060, 0.65329, -0.27057>";
-string default_positions2 = "<-0.12614, 0.34405, 0.39962>=<-0.70712, 0.00000, -0.00002, 0.70709>";
-string default_positions3 = "<0.01161, -0.05880, 0.27515>=<-0.39268, 0.50049, 0.32452, 0.70000>";
+string default_positions1 = "<-0.29141, 0.36309, -0.36660>=<0.65328, 0.27060, 0.65329, -0.27057>";
+string default_positions2 = "<-0.16518, 0.28712, 0.75404>=<-0.70712, 0.00000, -0.00002, 0.70709>";
+string default_positions3 = "<0.27477, -0.28130, 0.38117>=<-0.39268, 0.50049, 0.32452, 0.70000>";
 string default_texture = "e4db4e44-4ba5-a7c3-051f-6ea3f880ce85";
 string message_adjustment = "move me and click to apply pos";
 string animation_hold = "[Hold]";
@@ -57,6 +57,7 @@ gun_power_state = FALSE; gun_holster = FALSE;
 llSetLinkPrimitiveParamsFast(meter,[PRIM_DESC,"trigger"]);
 list target=llGetLinkPrimitiveParams(turn1,[PRIM_DESC]);
 list items0=llParseString2List(llList2String(target,0),["="],[]);
+llSetLinkPrimitiveParamsFast(gun,[PRIM_TEXT,"",llGetColor(ALL_SIDES),0]);
 llSetLinkPrimitiveParamsFast(LINK_THIS,[PRIM_POS_LOCAL,(vector)llList2String(items0,0),PRIM_ROT_LOCAL
 ,(rotation)llList2String(items0,1),PRIM_TEXT,"",llGetColor(ALL_SIDES),0]);
 llRequestPermissions(llGetOwner(),PERMISSION_TAKE_CONTROLS|PERMISSION_TRIGGER_ANIMATION);
@@ -302,7 +303,7 @@ default
     counter = 0; state_position =1; llSetTimerEvent(1);
     llSetLinkPrimitiveParamsFast(particle1,[PRIM_DESC,""]);
     llRequestPermissions(llGetOwner(),PERMISSION_TAKE_CONTROLS|PERMISSION_TRIGGER_ANIMATION);
-    llSetLinkPrimitiveParamsFast(LINK_THIS,[PRIM_TEXT,message_adjustment+"\n"+"time : "+(string)(adjust_time-counter)+"\n|"+"\nV",
+    llSetLinkPrimitiveParamsFast(gun,[PRIM_TEXT,message_adjustment+"\n"+"time : "+(string)(adjust_time-counter)+"\n|"+"\nV",
     llGetColor(ALL_SIDES),1]);
     }
     run_time_permissions(integer perm)
@@ -355,6 +356,6 @@ default
     llSetLinkPrimitiveParamsFast(LINK_THIS,[PRIM_POS_LOCAL,(vector)llList2String(items0,0),PRIM_ROT_LOCAL,(rotation)llList2String(items0,1),
     PRIM_TEXT,"", llGetColor(ALL_SIDES),0]); state default;
     }else{
-    llSetLinkPrimitiveParamsFast(LINK_THIS,[PRIM_TEXT,message_adjustment+"\n"+"time : "+(string)(adjust_time-counter)+"\n|"+"\nV", llGetColor(ALL_SIDES),1]);
+    llSetLinkPrimitiveParamsFast(gun,[PRIM_TEXT,message_adjustment+"\n"+"time : "+(string)(adjust_time-counter)+"\n|"+"\nV", llGetColor(ALL_SIDES),1]);
     counter = counter + 1;
 } } }
