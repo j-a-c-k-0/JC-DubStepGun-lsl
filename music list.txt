@@ -1,3 +1,15 @@
+@OliverTreeWithYou
+shoot_timing=2.0
+idle_music=ad077cb4-f27a-0be7-0fc8-9e5c2ba34dc8
+start_fire=ee4a83eb-6847-4078-fb13-121a02a30899
+shoot_sound=61b56cfa-5b31-b80d-7c81-8b4cb255ba89
+
+@MISOGI_FADEAWAY
+shoot_timing=2.0
+idle_music=4344eec3-5f44-4f63-132c-aa0d535a807d
+start_fire=7f038ada-ceb5-1bcd-64f9-c1bf2439b1b2
+shoot_sound=184e1752-6464-2fff-e7ad-6ca0020dd1ec
+
 @TATU-AllTheThingsSheSaid
 shoot_timing=2.1
 idle_music=d7533492-2617-38f8-97e4-111cd28dc6d8
