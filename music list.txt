@@ -1,3 +1,9 @@
+@BurrSamsonChaotik
+shoot_timing=1.15
+idle_music=21372c84-300e-3f51-784a-e17ec54a097d
+start_fire=fb606af5-b115-2d4a-1790-28959bb0dffb
+shoot_sound=9710bf9c-0dcd-2dcf-f493-9735aba04605
+
 @OliverTreeWithYou
 shoot_timing=2.0
 idle_music=ad077cb4-f27a-0be7-0fc8-9e5c2ba34dc8
