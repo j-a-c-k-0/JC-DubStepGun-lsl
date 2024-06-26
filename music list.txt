@@ -1,3 +1,9 @@
+@SleepyHead
+shoot_timing=2.0
+idle_music=ad98576a-38b1-8cb3-93fe-65cd0cac7494
+start_fire=288fc7db-086b-ed71-5880-b45cf471716e
+shoot_sound=d7a65dff-fb35-3805-23a0-d68fea8081e4
+
 @BurrSamsonChaotik
 shoot_timing=1.15
 idle_music=21372c84-300e-3f51-784a-e17ec54a097d
