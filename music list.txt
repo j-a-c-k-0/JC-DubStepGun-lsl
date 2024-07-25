@@ -1,3 +1,15 @@
+@TobyFoxASGORE
+shoot_timing=2.85
+idle_music=aa238c97-26ad-8a53-6ee0-cf949e991219
+start_fire=ee833f2a-8cf1-0c67-613d-f77a6b614145
+shoot_sound=ca8c6d65-e255-9412-f839-f06fee9c9f0d
+
+@DubstepDishwasher
+shoot_timing=0.5
+idle_music=4a83bf17-f987-1726-219b-549d7f1bff88
+start_fire=d6724fc1-33a0-1cfd-c094-054c2c55973e
+shoot_sound=bc3321e1-0cf9-49b8-b34c-ea604d01b6fb
+
 @SleepyHead
 shoot_timing=2.0
 idle_music=ad98576a-38b1-8cb3-93fe-65cd0cac7494
