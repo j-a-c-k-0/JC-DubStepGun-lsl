@@ -1,3 +1,9 @@
+@RockSolidHero
+shoot_timing=1.1
+idle_music=b7af9d19-3285-3efc-43d0-9c83eb35e870
+start_fire=62d4392f-3fb0-4346-c5cc-04f20b5626ff
+shoot_sound=bee4cf82-b8c1-1993-3bf9-88d90bcea634
+
 @TobyFoxASGORE
 shoot_timing=2.85
 idle_music=aa238c97-26ad-8a53-6ee0-cf949e991219
