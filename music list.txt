@@ -1,3 +1,9 @@
+@CaravanPalaceMirrors
+shoot_timing=2.1
+idle_music=f96ee907-2801-0b55-7627-1a7789d461c2
+start_fire=982dd17a-6046-4eaa-7e3f-df25d19e1450
+shoot_sound=7afb7a85-d00a-e8d1-0b22-f730d70e4038
+
 @RockSolidHero
 shoot_timing=1.1
 idle_music=b7af9d19-3285-3efc-43d0-9c83eb35e870
