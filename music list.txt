@@ -1,3 +1,9 @@
+@Red&BlueBathRhymes
+shoot_timing=2.6
+idle_music=4c253354-f8e5-ec41-e2b7-ade8d8c33a6e
+start_fire=dcbd7dba-fde8-b536-35e0-4053401f4733
+shoot_sound=79b84e23-b820-9644-aa4f-8db385ffebbb
+
 @CaravanPalaceMirrors
 shoot_timing=2.1
 idle_music=f96ee907-2801-0b55-7627-1a7789d461c2
