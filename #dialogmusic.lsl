@@ -89,30 +89,11 @@ list make_list(integer a,integer b,integer B)
   if(name == notecardName){inventory += "null";}else{inventory += llDeleteSubString(name,40,1000);}
   }return inventory;
 }
-integer search(string search,integer inventory_type)
-{
-  integer Lengthx = llGetInventoryNumber(inventory_type); integer x;
-  for ( ; x < Lengthx; x += 1)
-  {
-    string A = llToLower(search); string B = llToLower(llGetInventoryName(inventory_type, x));
-    integer search_found = ~llSubStringIndex(B,A);
-    if (search_found)
-    {
-    integer Division= x / 9 ; llOwnerSay("[ "+llGetInventoryName(inventory_type,x)+" ] [ page = "+(string)(Division+1)+" list = "+(string)x+" ]");
-    dialog_songmenu(Division+1,inventory_type);
-    return 1;
-} }return 0;}
-search_music(string search)
-{
-dialog_select_switch = TRUE;if(search(search,INVENTORY_SOUND) == 1){return;}
-dialog_select_switch = FALSE;if(search(search,INVENTORY_NOTECARD) == 1){return;}
-llMessageLinked(LINK_THIS, 0,"database_loop="+search,""); return;
-}
 option_topmenu()
 {
 list target=llGetLinkPrimitiveParams(speaker,[PRIM_DESC]);
 list item=llGetLinkPrimitiveParams(radius_link,[PRIM_DESC]); 
-integer music_list=(llGetInventoryNumber(INVENTORY_NOTECARD)-1)+llGetInventoryNumber(INVENTORY_SOUND)+llLinksetDataCountKeys();
+integer music_list=(llGetInventoryNumber(INVENTORY_NOTECARD)-1)+llGetInventoryNumber(INVENTORY_SOUND)+(integer)llLinksetDataRead("uuid");
 llTextBox(llGetOwner(),
 "\n"+"[ Status ]"+"\n\n"+
 "Memory = "+(string)llLinksetDataAvailable()+"\n"+
@@ -239,7 +220,7 @@ default
           if(text == "[ ♫ songs ]"){random_channel(); type_option();}
           if(text == "[ ♫ P̶l̶a̶y̶ ]"){random_channel(); type_option();}
           if(text == "..."){random_channel(); type_option();}
-          if(llList2String(items0,0) == "s"){search_music(llList2String(items0,1));}
+          if(llList2String(items0,0) == "s"){llMessageLinked(LINK_THIS, 0,"search_engine="+llList2String(items0,1),"");}
           if(llList2String(items0,0) == "r")
           {
           llSetLinkPrimitiveParamsFast(radius_link,[PRIM_DESC,llDeleteSubString(check_output(llList2Float(items0,1)),4,300)]);
