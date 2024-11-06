@@ -187,21 +187,21 @@ default
             llMessageLinked(LINK_THIS, 0,"random_music_uuid_T","");
             }return;
           }
-          if(text == "[ ♫ note ]")
-          {
-            if(switch_mode == FALSE)
-            {
-            dialog_select_switch = FALSE; random_channel(); dialog_songmenu(cur_page,INVENTORY_NOTECARD);
-            }else{
-            random_channel(); type_option();
-          } }
           if(text == "[ ♫ sound ]")
           {
             if(switch_mode == FALSE)
             {
             dialog_select_switch = TRUE; random_channel(); dialog_songmenu(cur_page0,INVENTORY_SOUND);
             }else{
-            random_channel(); type_option();
+            llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"0"]); random_channel(); type_option();
+          } }
+          if(text == "[ ♫ note ]")
+          {
+            if(switch_mode == FALSE)
+            {
+            dialog_select_switch = FALSE; random_channel(); dialog_songmenu(cur_page,INVENTORY_NOTECARD);
+            }else{
+            llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"1"]); random_channel(); type_option();
           } }
           if(text == "[ ♫ uuid ]")
           {
@@ -209,7 +209,7 @@ default
             {
             llMessageLinked(LINK_THIS,0,"[ uuid ]","");
             }else{
-            random_channel(); type_option();
+            llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"2"]); random_channel(); type_option();
           } }
           if(text == "[ ♫ Pause ]"){gun_power_state = FALSE; llMessageLinked(LINK_THIS,0,"[ Pause ]_00",""); type_option();}
           if(text == "[ ♫ Play ]"){gun_power_state = TRUE; llMessageLinked(LINK_THIS,0,"[ Play ]_00",""); type_option();}
