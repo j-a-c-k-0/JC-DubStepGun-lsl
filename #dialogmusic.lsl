@@ -123,7 +123,6 @@ default
     radius_link = getLinkNum("starget");
     particle1 = getLinkNum("particle1");
     particle2 = getLinkNum("particle2");
-    llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"1"]);
     llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,"none"]);
     llRequestPermissions(llGetOwner(),PERMISSION_TAKE_CONTROLS);
     }
@@ -194,7 +193,7 @@ default
             {
             dialog_select_switch = FALSE; random_channel(); dialog_songmenu(cur_page,INVENTORY_NOTECARD);
             }else{
-            llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"1"]); random_channel(); type_option();
+            random_channel(); type_option();
           } }
           if(text == "[ ♫ sound ]")
           {
@@ -202,7 +201,7 @@ default
             {
             dialog_select_switch = TRUE; random_channel(); dialog_songmenu(cur_page0,INVENTORY_SOUND);
             }else{
-            llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"0"]); random_channel(); type_option();
+            random_channel(); type_option();
           } }
           if(text == "[ ♫ uuid ]")
           {
@@ -210,7 +209,7 @@ default
             {
             llMessageLinked(LINK_THIS,0,"[ uuid ]","");
             }else{
-            llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"2"]); random_channel(); type_option();
+            random_channel(); type_option();
           } }
           if(text == "[ ♫ Pause ]"){gun_power_state = FALSE; llMessageLinked(LINK_THIS,0,"[ Pause ]_00",""); type_option();}
           if(text == "[ ♫ Play ]"){gun_power_state = TRUE; llMessageLinked(LINK_THIS,0,"[ Play ]_00",""); type_option();}
@@ -242,7 +241,6 @@ default
             integer pnum = (integer)llGetSubString(text, 6, -1); string music_selection = llGetInventoryName(INVENTORY_SOUND,pnum);
             llMessageLinked(LINK_THIS,0,"erase_data","");llMessageLinked(LINK_THIS,0,"fetch_note_rationed|"+music_selection,"");
             llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,music_selection]);
-            llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"0"]);
             dialog_songmenu(cur_page0,INVENTORY_SOUND);
           } }
           if(dialog_select_switch == FALSE)
@@ -255,7 +253,7 @@ default
               string music_selection = llGetInventoryName(INVENTORY_NOTECARD,pnum); llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,music_selection]);
               if(music_selection == notecardName){dialog_songmenu(cur_page,INVENTORY_NOTECARD);}else
               {    
-              llMessageLinked(LINK_THIS,0,"erase_data",""); llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"1"]);
+              llMessageLinked(LINK_THIS,0,"erase_data","");
               llMessageLinked(LINK_THIS,0,"fetch_note_rationed|"+music_selection,"");  
               dialog_songmenu(cur_page,INVENTORY_NOTECARD);
     } } } } } }
