@@ -6,6 +6,7 @@ integer cur_page = 1;
 integer chanhandlr;
 integer num;
 
+integer slider3;
 integer slider4;
 integer intLine1;
 integer particle2;
@@ -28,6 +29,7 @@ integer readnote(string notename)
   {
   llMessageLinked(LINK_THIS,0,"upload_note|idle_music=" +(string)llGetInventoryKey(notename),"");
   llSetLinkPrimitiveParamsFast(slider4,[PRIM_DESC,"1"]);
+  llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"0"]);
   return 2;
   }
   if(llGetInventoryType(notename) == INVENTORY_NOTECARD)
@@ -36,17 +38,21 @@ integer readnote(string notename)
   keyConfigQueryhandle = llGetNotecardLine(notename, intLine1);
   keyConfigUUID = llGetInventoryKey(notename);
   llSetLinkPrimitiveParamsFast(slider4,[PRIM_DESC,"0"]);
+  llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"1"]);
   return 1;
   }
   llMessageLinked(LINK_THIS,0,"upload_note|idle_music="+notename,"");    
   llSetLinkPrimitiveParamsFast(slider4,[PRIM_DESC,"1"]);
+  llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"2"]);
   return 2;
 }
 startup()
 {
+slider3 = getLinkNum("slider3");
 slider4 = getLinkNum("slider4"); 
 particle2 = getLinkNum("particle2");
 llLinksetDataDeleteFound("temp-","");
+llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"1"]);
 llSetLinkPrimitiveParamsFast(slider4,[PRIM_DESC,"0"]);
 llRequestPermissions(llGetOwner(),PERMISSION_TAKE_CONTROLS);
 }
