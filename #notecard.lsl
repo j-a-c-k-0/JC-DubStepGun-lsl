@@ -23,8 +23,9 @@ if (llGetLinkName(i)==primName) return i;
 }
 return FALSE;
 }
-integer readnote(string notename)
+integer readnote(string notename,string page_info)
 {
+  llMessageLinked(LINK_THIS,5,page_info,"");
   if(llGetInventoryType(notename) == INVENTORY_SOUND)
   {
   llMessageLinked(LINK_THIS,0,"upload_note|idle_music=" +(string)llGetInventoryKey(notename),"");
@@ -102,7 +103,7 @@ dialog0()
 if (!num){llMessageLinked(LINK_THIS, 0,"mainmenu_request",""); llOwnerSay("Could not find anything"); return;}
 ichannel = llFloor(llFrand(1000000) - 100000); llListenRemove(chanhandlr); chanhandlr = llListen(ichannel, "", NULL_KEY, ""); dialog_songmenu(cur_page);
 }
-match(string a,string b){if(~llSubStringIndex(llToLower(b),llToLower(a))){llLinksetDataWrite("temp-"+(string)num,b); num = num + 1;}}
+match(string a,string b,string c,integer d){if(~llSubStringIndex(llToLower(b),llToLower(a))){llLinksetDataWrite("temp-"+(string)num,b+"|"+c+"|"+(string)d); num = num + 1;}}
 search_engine(string search)
 {
 num=0;
@@ -111,9 +112,9 @@ integer x;
 integer y0 = (integer)llLinksetDataRead("uuid");
 integer y1 = llGetInventoryNumber(INVENTORY_SOUND);
 integer y2 = llGetInventoryNumber(INVENTORY_NOTECARD);
-for( ; x < y0; x += 1){match(search,llLinksetDataRead("m-"+(string)x));} x=0;
-for( ; x < y1; x += 1){match(search,llGetInventoryName(INVENTORY_SOUND,x));} x=0;
-for( ; x < y2; x += 1){match(search,llGetInventoryName(INVENTORY_NOTECARD,x));} x=0;
+for( ; x < y0; x += 1){match(search,llLinksetDataRead("m-"+(string)x),"u",x);} x=0;
+for( ; x < y1; x += 1){match(search,llGetInventoryName(INVENTORY_SOUND,x),"s",x);} x=0;
+for( ; x < y2; x += 1){match(search,llGetInventoryName(INVENTORY_NOTECARD,x),"n",x);} x=0;
 }
 default 
 { 
@@ -149,9 +150,9 @@ default
           llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,llList2String(items,0)]);
           if(~llSubStringIndex(a,"|"))
           {
-          if(readnote(llList2String(items,1)) == 2){llMessageLinked(LINK_THIS,0,"music_changed","");}
+          if(readnote(llList2String(items,1),a) == 2){llMessageLinked(LINK_THIS,0,"music_changed","");}
           }else{
-          if(readnote(a) == 2){llMessageLinked(LINK_THIS,0,"music_changed","");}
+          if(readnote(a,a) == 2){llMessageLinked(LINK_THIS,0,"music_changed","");}
           }
         }
         dialog0();
@@ -163,7 +164,7 @@ default
       list params = llParseString2List(msg, ["|"], []);
       if(llList2String(params, 0) == "fetch_note_rationed")
       {
-        if(readnote(llList2String(params,1)) == 2)
+        if(readnote(llList2String(params,1),"null") == 2)
         {
         llMessageLinked(LINK_THIS,0,"music_changed","");
         return;
