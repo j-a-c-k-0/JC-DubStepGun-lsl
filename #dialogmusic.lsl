@@ -105,6 +105,14 @@ llTextBox(llGetOwner(),
 "Volume > ( v/0.5 )"+"\n"+
 "Radius > ( r/0 )"+"\n",ichannel);
 }
+random_select(integer inventory_type)
+{
+integer x = llFloor(llFrand(llGetInventoryNumber(inventory_type)));
+string music_selection = llGetInventoryName(inventory_type,x);
+if(inventory_type ==  INVENTORY_NOTECARD){cur_page = (x/9)+1;}else{cur_page0 = (x/9)+1;}
+llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,music_selection]);llMessageLinked(LINK_THIS,0,"erase_data","");
+llMessageLinked(LINK_THIS,0,"fetch_note_rationed|"+music_selection,"");
+}
 default
 {
     changed(integer change)
@@ -131,32 +139,26 @@ default
     if(PERMISSION_TAKE_CONTROLS & perm){llTakeControls( CONTROL_BACK|CONTROL_FWD, TRUE, TRUE );}
     }
     link_message(integer source, integer num, string str, key id)
-    {
-      list params = llParseString2List(str, ["|"], []);
+    { 
       if(str == "song_request"){random_channel(); type_option();}
       if(str == "option_request"){random_channel(); option_topmenu();}
       if(str == "[ Pause ]"){gun_power_state = FALSE;}      
       if(str == "[ Play ]"){gun_power_state = TRUE;}
       if(str == "[ Reset ]"){llResetScript();}
+      if(num == 5)
+      {   
+        list c = llParseString2List(str, ["|"], []);
+        if(llList2String(c,1) == "s"){cur_page0 = ((integer)llList2String(c,2)/9)+1;}
+        if(llList2String(c,1) == "n"){cur_page = ((integer)llList2String(c,2)/9)+1;}      
+      }
       if(str == "random_music")
       {
         list c = llGetLinkPrimitiveParams(slider3,[PRIM_DESC]);
-        if(llList2String(c,0) == "0")
-        {   
-        integer x = llFloor(llFrand(llGetInventoryNumber(INVENTORY_SOUND)));
-        string music_selection = llGetInventoryName(INVENTORY_SOUND,x);
-        llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,music_selection]);llMessageLinked(LINK_THIS,0,"erase_data","");
-        llMessageLinked(LINK_THIS,0,"fetch_note_rationed|"+music_selection,"");
-        llMessageLinked(LINK_THIS, 0,"mainmenu_request","");cur_page0 = (x/9)+1;
-        }
-        if(llList2String(c,0) == "1")
-        {   
-        integer x = llFloor(llFrand(llGetInventoryNumber(INVENTORY_NOTECARD)));
-        string music_selection = llGetInventoryName(INVENTORY_NOTECARD,x);
-        llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,music_selection]);llMessageLinked(LINK_THIS,0,"erase_data","");
-        llMessageLinked(LINK_THIS, 0,"fetch_note_rationed|"+music_selection,"");
-        llMessageLinked(LINK_THIS, 0,"mainmenu_request","");cur_page = (x/9)+1;
-    } } }
+        if(llList2String(c,0) == "1"){ random_select(INVENTORY_NOTECARD); } 
+        if(llList2String(c,0) == "0"){ random_select(INVENTORY_SOUND); }
+        llMessageLinked(LINK_THIS, 0,"mainmenu_request","");   
+        return;
+    } }
     listen(integer chan, string sname, key skey, string text)
     {
     list target1 =llGetLinkPrimitiveParams(particle1,[PRIM_DESC]); if(llList2String(target1,0) == "shoot"){return;} 
@@ -165,27 +167,12 @@ default
     {
           if(text == "[ ♫ random ]")
           {
-            list c = llGetLinkPrimitiveParams(slider3,[PRIM_DESC]); string a = llList2String(c,0);
-            if(a == "0")
-            {
-            integer x = llFloor(llFrand(llGetInventoryNumber(INVENTORY_SOUND)));
-            string music_selection = llGetInventoryName(INVENTORY_SOUND,x);
-            llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,music_selection]);llMessageLinked(LINK_THIS,0,"erase_data","");
-            llMessageLinked(LINK_THIS,0,"fetch_note_rationed|"+music_selection,"");
-            random_channel(); type_option(); cur_page0 = (x/9)+1;
-            }
-            if(a == "1")
-            {
-            integer x = llFloor(llFrand(llGetInventoryNumber(INVENTORY_NOTECARD)));
-            string music_selection = llGetInventoryName(INVENTORY_NOTECARD,x);
-            llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,music_selection]);llMessageLinked(LINK_THIS,0,"erase_data","");
-            llMessageLinked(LINK_THIS, 0,"fetch_note_rationed|"+music_selection,"");
-            random_channel(); type_option(); cur_page = (x/9)+1;
-            }
-            if(a == "2")
-            {
-            llMessageLinked(LINK_THIS, 0,"random_music_uuid_T","");
-            }return;
+            list c = llGetLinkPrimitiveParams(slider3,[PRIM_DESC]);
+            if(llList2String(c,0) == "2"){ llMessageLinked(LINK_THIS,0,"random_music_uuid",""); return; }
+            if(llList2String(c,0) == "1"){ random_select(INVENTORY_NOTECARD); } 
+            if(llList2String(c,0) == "0"){ random_select(INVENTORY_SOUND); }
+            type_option();
+            return;
           }
           if(text == "[ ♫ sound ]")
           {
