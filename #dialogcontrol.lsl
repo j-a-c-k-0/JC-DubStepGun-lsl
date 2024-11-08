@@ -265,7 +265,7 @@ default
        if(text == "[ ♫ random ]")
        {
        list c = llGetLinkPrimitiveParams(slider3,[PRIM_DESC]);
-       if(llList2String(c,0) == "2"){llMessageLinked(LINK_THIS, 0,"random_music_uuid","");return;}
+       if(llList2String(c,0) == "2"){llMessageLinked(LINK_THIS,1,"random_music_uuid","");return;}
        llMessageLinked(LINK_THIS, 0,"random_music","");
        }
        if(dialog_select_switch == FALSE)
