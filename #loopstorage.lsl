@@ -102,19 +102,17 @@ default
     list items = llParseString2List(msg,["="],[]);
     if(msg == "[ Reset ]"){llResetScript();}
     if(msg == "[ uuid ]"){dialog0();}
-    if(msg == "random_music_uuid_T")
-    {
-      integer x = llFloor(llFrand(music)); cur_page = (x/9)+1;   
-      list items = llParseString2List(llLinksetDataRead("m-"+(string)x),["|"],[]); llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,llList2String(items,0)]); 
-      llMessageLinked(LINK_THIS,0,"erase_data",""); llMessageLinked(LINK_THIS, 0,"fetch_note_rationed|"+llList2String(items,1),"");
-      llMessageLinked(LINK_THIS, 0,"song_request","");
+    if(num == 5)
+    {   
+      list c = llParseString2List(msg, ["|"], []);
+      if(llList2String(c,2) == "u"){cur_page = ((integer)llList2String(c,3)/9)+1;}      
     }
     if(msg == "random_music_uuid")
     {
       integer x = llFloor(llFrand(music)); cur_page = (x/9)+1;   
       list items = llParseString2List(llLinksetDataRead("m-"+(string)x),["|"],[]); llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,llList2String(items,0)]); 
       llMessageLinked(LINK_THIS,0,"erase_data",""); llMessageLinked(LINK_THIS, 0,"fetch_note_rationed|"+llList2String(items,1),"");
-      llMessageLinked(LINK_THIS, 0,"mainmenu_request","");
+      if(num == 1){llMessageLinked(LINK_THIS, 0,"mainmenu_request","");}else{llMessageLinked(LINK_THIS, 0,"song_request","");}
     } }
     listen(integer chan, string sname, key skey, string text)
     {
