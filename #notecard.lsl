@@ -23,30 +23,6 @@ if (llGetLinkName(i)==primName) return i;
 }
 return FALSE;
 }
-integer readnote(string notename,string page_info)
-{
-  llMessageLinked(LINK_THIS,5,page_info,"");
-  if(llGetInventoryType(notename) == INVENTORY_SOUND)
-  {
-  llMessageLinked(LINK_THIS,0,"upload_note|idle_music=" +(string)llGetInventoryKey(notename),"");
-  llSetLinkPrimitiveParamsFast(slider4,[PRIM_DESC,"1"]);
-  llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"0"]);
-  return 2;
-  }
-  if(llGetInventoryType(notename) == INVENTORY_NOTECARD)
-  {
-  note_name = notename; intLine1 = 0;
-  keyConfigQueryhandle = llGetNotecardLine(notename, intLine1);
-  keyConfigUUID = llGetInventoryKey(notename);
-  llSetLinkPrimitiveParamsFast(slider4,[PRIM_DESC,"0"]);
-  llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"1"]);
-  return 1;
-  }
-  llMessageLinked(LINK_THIS,0,"upload_note|idle_music="+notename,"");    
-  llSetLinkPrimitiveParamsFast(slider4,[PRIM_DESC,"1"]);
-  llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"2"]);
-  return 2;
-}
 startup()
 {
 slider3 = getLinkNum("slider3");
@@ -56,6 +32,67 @@ llLinksetDataDeleteFound("temp-","");
 llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"1"]);
 llSetLinkPrimitiveParamsFast(slider4,[PRIM_DESC,"0"]);
 llRequestPermissions(llGetOwner(),PERMISSION_TAKE_CONTROLS);
+}
+integer readnote(string notename,integer switch)
+{
+ if(switch == 0)
+ { 
+    if(llGetInventoryType(notename) == INVENTORY_NONE)
+    {
+    llMessageLinked(LINK_THIS,0,"upload_note|idle_music="+notename,"");    
+    llSetLinkPrimitiveParamsFast(slider4,[PRIM_DESC,"1"]);
+    llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"2"]);
+    return 2;
+    }
+    if(llGetInventoryType(notename) == INVENTORY_SOUND)
+    {
+    llMessageLinked(LINK_THIS,0,"upload_note|idle_music=" +(string)llGetInventoryKey(notename),"");
+    llSetLinkPrimitiveParamsFast(slider4,[PRIM_DESC,"1"]);
+    llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"0"]);
+    return 2;
+    }
+    if(llGetInventoryType(notename) == INVENTORY_NOTECARD)
+    {
+    note_name = notename; intLine1 = 0;
+    keyConfigQueryhandle = llGetNotecardLine(notename, intLine1);
+    keyConfigUUID = llGetInventoryKey(notename);
+    llSetLinkPrimitiveParamsFast(slider4,[PRIM_DESC,"0"]);
+    llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"1"]);
+    return 1;
+    }
+ }
+ if(switch == 1)
+ { 
+      list x = llParseString2List(notename, ["|"], []);
+      if(llGetInventoryType(notename) == INVENTORY_NONE)
+      {
+         llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,llList2String(x,0)]); 
+         llMessageLinked(LINK_THIS,5,notename,""); 
+         if(llList2String(x,2) == "u")
+         {
+         llMessageLinked(LINK_THIS,0,"upload_note|idle_music="+llList2String(x,1),"");
+         llSetLinkPrimitiveParamsFast(slider4,[PRIM_DESC,"1"]);
+         llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"2"]);
+         return 2;
+         }
+         if(llList2String(x,1) == "s")
+         {
+         llMessageLinked(LINK_THIS,0,"upload_note|idle_music="+(string)llGetInventoryKey(llList2String(x,0)),"");
+         llSetLinkPrimitiveParamsFast(slider4,[PRIM_DESC,"1"]);
+         llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"0"]);
+         return 2;
+         }
+         if(llList2String(x,1) == "n")
+         {
+         note_name = llList2String(x,0); intLine1 = 0;
+         keyConfigQueryhandle = llGetNotecardLine(llList2String(x,0), intLine1);
+         keyConfigUUID = llGetInventoryKey(llList2String(x,0));
+         llSetLinkPrimitiveParamsFast(slider4,[PRIM_DESC,"0"]);
+         llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"1"]);
+         return 1;
+         }
+      }
+   }return 0;
 }
 list order_buttons(list buttons)
 {
@@ -146,27 +183,20 @@ default
         string a = llLinksetDataRead("temp-"+llGetSubString(text,6,-1));  
         if(a == notecardName){ }else
         {
-          list items = llParseString2List(a,["|"], []);
-          llSetLinkPrimitiveParamsFast(particle2,[PRIM_DESC,llList2String(items,0)]);
-          if(~llSubStringIndex(a,"|"))
-          {
-          if(readnote(llList2String(items,1),a) == 2){llMessageLinked(LINK_THIS,0,"music_changed","");}
-          }else{
-          if(readnote(a,a) == 2){llMessageLinked(LINK_THIS,0,"music_changed","");}
+          if(readnote(a,1) == 2){llMessageLinked(LINK_THIS,0,"music_changed","");}
+          dialog0();
           }
         }
-        dialog0();
-        } 
-      } 
+      }  
     }
     link_message(integer sender_num, integer num, string msg, key id)
     {       
       list params = llParseString2List(msg, ["|"], []);
       if(llList2String(params, 0) == "fetch_note_rationed")
       {
-        if(readnote(llList2String(params,1),"null") == 2)
+        if(readnote(llList2String(params,1),0) == 2)
         {
-        llMessageLinked(LINK_THIS,0,"music_changed","");
+        llMessageLinked(LINK_THIS,0,"music_changed",""); 
         return;
         }
       }
