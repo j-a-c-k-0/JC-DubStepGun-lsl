@@ -7,7 +7,7 @@ return<0.00000, 0.66667, 1.00000>;
 particleGen() 
 { 
 llSetStatus(STATUS_PHYSICS,FALSE);
-llSetStatus(STATUS_PHANTOM,FALSE); 
+llSetStatus(STATUS_PHANTOM,TRUE); 
 llRezObject("proximity_damage", llGetPos()+<0,0,0>, ZERO_VECTOR, ZERO_ROTATION, 33);
 vector Acolor = color((integer)llFrand(3));
 
