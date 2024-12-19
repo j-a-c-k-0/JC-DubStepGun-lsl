@@ -16,7 +16,9 @@ default
             key k = llDetectedKey(i);   
             if(k==llGetOwner()){}else
             {
-            llRezObject("damage",llDetectedPos(i)+(llDetectedVel(i)*0.1)+<0,0,2>,<0,0,-100>,ZERO_ROTATION,1);
+            llRezObjectWithParams("damage",[REZ_FLAGS,REZ_FLAG_TEMP|REZ_FLAG_NO_COLLIDE_FAMILY|REZ_FLAG_NO_COLLIDE_OWNER,
+            REZ_POS,llDetectedPos(i)+(llDetectedVel(i)*0.1)+<0,0,2>,FALSE,FALSE,REZ_VEL,<0,0,-100>,
+            FALSE,FALSE,REZ_ROT,ZERO_ROTATION,FALSE,REZ_PARAM,1]);
             }
         }
     }
