@@ -137,76 +137,62 @@ PSYS_SRC_ANGLE_BEGIN,0,
 PSYS_SRC_ANGLE_END,0,
 PSYS_SRC_OMEGA,<0,0,0>]);
 }
+rezzer(string object,float speed,vector pos,rotation rot,string data,integer num)
+{
+  if(llGetInventoryType(object) == INVENTORY_OBJECT)
+  {
+  llRezObjectWithParams(object,[
+  REZ_FLAGS,REZ_FLAG_TEMP|REZ_FLAG_NO_COLLIDE_FAMILY|REZ_FLAG_NO_COLLIDE_OWNER,
+  REZ_POS,pos+llRot2Fwd(rot)*.1,FALSE,FALSE,REZ_VEL,llRot2Fwd(rot)*speed,
+  FALSE,FALSE,REZ_ROT,rot,FALSE,REZ_PARAM_STRING,data,REZ_PARAM,num]);
+  }
+}
 float limit = 3;
 float count;
 Collision_bullet() 
 {
-list d=llGetObjectDetails(llGetOwner(),[OBJECT_POS,OBJECT_VELOCITY]);
 rotation rot = llGetRot(); 
-vector   fwd = llRot2Fwd(rot);
-vector  size = llGetAgentSize(llGetOwner())*0.4;
-float fvel=llVecMag(llList2Vector(d,1)); 
-vector rezVel = <110+fvel+fvel, 0.0, 0.0>*rot;
+vector fwd = llRot2Fwd(rot);
+vector size = llGetAgentSize(llGetOwner())*0.4;
 if(count>limit)
 {
-plasma_wave();llRezAtRoot("Col_Wub2",llGetPos()+<0.0,0.0, size.z>+fwd*(llVecMag(llGetVel()*0.0)+1.0),rezVel,rot,12); switch = FALSE;
+plasma_wave(); rezzer("Col_Wub2",110,llGetPos()+<0,0,size.z>+fwd*(llVecMag(llGetVel()*0.0)+1.0),rot,"",1); switch = FALSE;
 count = 0; 
 }else{
 count = count + 1;
 }
 if(switch == FALSE)
 {
-barrel1();llRezAtRoot("Col_Wub1",llGetPos()+<0.0,0.0, size.z>+fwd*(llVecMag(llGetVel()*0.0)+1.0),rezVel,rot,12); switch = TRUE;
+barrel1(); rezzer("Col_Wub1",110,llGetPos()+<0,0,size.z>+fwd*(llVecMag(llGetVel()*0.0)+1.0),rot,"",1); switch = TRUE;
 }else{
-barrel0();llRezAtRoot("Col_Wub0",llGetPos()+<0.0,0.0, size.z>+fwd*(llVecMag(llGetVel()*0.0)+1.0),rezVel,rot,12); switch = FALSE;
+barrel0(); rezzer("Col_Wub0",110,llGetPos()+<0,0,size.z>+fwd*(llVecMag(llGetVel()*0.0)+1.0),rot,"",1); switch = FALSE;
 }}
 float limi = 2;
 float coun;
 default_bullet() 
 {
 rotation rot = llGetRot(); 
-vector   fwd = llRot2Fwd(rot);
-vector  size = llGetAgentSize(llGetOwner())*0.4;
+vector fwd = llRot2Fwd(rot);
+vector size = llGetAgentSize(llGetOwner())*0.4; 
 if(coun>limi)
 {
-plasma_wave();llRezAtRoot("Wub1",llGetPos()+<0.0, 0.0, size.z>+fwd*(llVecMag(llGetVel()*0.0)+1.0),fwd,rot,12); switch = FALSE;
+plasma_wave(); rezzer("Wub1",110,llGetPos()+<0.0,0.0,size.z>+fwd*(llVecMag(llGetVel()*0.0)+1.0),rot,"",1); switch = FALSE;
 coun = 0; 
 }else{
 coun = coun + 1;
 }
 if(switch == FALSE)
 {
-barrel1();llRezAtRoot("Wub0",llGetPos()+<0.0, 0.0, size.z>+fwd*(llVecMag(llGetVel()*0.0)+1.0),fwd,rot,12); switch = TRUE;
+barrel1(); rezzer("Wub0",110,llGetPos()+<0.0,0.0,size.z>+fwd*(llVecMag(llGetVel()*0.0)+1.0),rot,"",1); switch = TRUE;
 }else{
-barrel0();llRezAtRoot("Wub2",llGetPos()+<0.0, 0.0, size.z>+fwd*(llVecMag(llGetVel()*0.0)+1.0),fwd,rot,12); switch = FALSE;
+barrel0(); rezzer("Wub2",110,llGetPos()+<0.0,0.0,size.z>+fwd*(llVecMag(llGetVel()*0.0)+1.0),rot,"",1); switch = FALSE;
 }}
-bullet_0() 
+bullet_Shockwave(string A) 
 {
 rotation rot = llGetRot(); 
-vector   fwd = llRot2Fwd(rot);
-vector  size = llGetAgentSize(llGetOwner())*0.4;            
-llRezAtRoot("Small_Shockwave",llGetPos()+<0.0, 0.0, size.z>+fwd*(llVecMag(llGetVel()*0.0)+1.0),fwd,rot,12);
-}
-bullet_1() 
-{
-rotation rot = llGetRot(); 
-vector   fwd = llRot2Fwd(rot);
-vector  size = llGetAgentSize(llGetOwner())*0.4;            
-llRezAtRoot("Medium_Shockwave",llGetPos()+<0.0, 0.0, size.z>+fwd*(llVecMag(llGetVel()*0.0)+1.0),fwd,rot,12);
-}
-bullet_2() 
-{
-rotation rot = llGetRot(); 
-vector   fwd = llRot2Fwd(rot);
-vector  size = llGetAgentSize(llGetOwner())*0.4;            
-llRezAtRoot("Large_Shockwave",llGetPos()+<0.0, 0.0, size.z>+fwd*(llVecMag(llGetVel()*0.0)+1.0),fwd,rot,12);
-}
-bullet_3() 
-{
-rotation rot = llGetRot(); 
-vector   fwd = llRot2Fwd(rot);
-vector  size = llGetAgentSize(llGetOwner())*0.4;            
-llRezAtRoot("ExLarge_Shockwave",llGetPos()+<0.0, 0.0, size.z>+fwd*(llVecMag(llGetVel()*0.0)+1.0),fwd,rot,12);
+vector fwd = llRot2Fwd(rot);
+vector size = llGetAgentSize(llGetOwner())*0.4;            
+rezzer(A,0,llGetPos()+<0.0,0.0,size.z>+fwd*(llVecMag(llGetVel()*0.0)+1.0),rot,"",1);
 }
 default
 {
@@ -236,11 +222,13 @@ default
     {
     list target0 =llGetLinkPrimitiveParams(particle0,[PRIM_DESC]);
     list target1 =llGetLinkPrimitiveParams(particle1,[PRIM_DESC]);
-    if(llList2String(target1,0) == "shoot"){if(fire == FALSE){fire = TRUE;}}else{if(fire == TRUE){llLinkParticleSystem(LINK_SET,[]); fire = FALSE;}}
-    if(llList2String(target0,0) == "Collision_Wub"){if(llList2String(target1,0) == "shoot"){Collision_bullet();}}
-    if(llList2String(target0,0) == "Default_Wub"){if(llList2String(target1,0) == "shoot"){default_bullet();}}
-    if(llList2String(target0,0) == "Small_Shockwave"){if(llList2String(target1,0) == "shoot"){shockwave();bullet_0();}}
-    if(llList2String(target0,0) == "Medium_Shockwave"){if(llList2String(target1,0) == "shoot"){shockwave();bullet_1();}}
-    if(llList2String(target0,0) == "Large_Shockwave"){if(llList2String(target1,0) == "shoot"){shockwave();bullet_2();}}
-    if(llList2String(target0,0) == "ExLarge_Shockwave"){if(llList2String(target1,0) == "shoot"){shockwave();bullet_3();}}
-  } }
+    if(llList2String(target1,0) == "shoot")
+    {
+    if(fire == FALSE){fire = TRUE;}else{if(fire == TRUE){llLinkParticleSystem(LINK_SET,[]); fire = FALSE;}}
+    if(llList2String(target0,0) == "Collision_Wub"){Collision_bullet();}
+    if(llList2String(target0,0) == "Default_Wub"){default_bullet();}
+    if(llList2String(target0,0) == "Small_Shockwave"){shockwave();bullet_Shockwave(llList2String(target0,0));}
+    if(llList2String(target0,0) == "Medium_Shockwave"){shockwave();bullet_Shockwave(llList2String(target0,0));}
+    if(llList2String(target0,0) == "Large_Shockwave"){shockwave();bullet_Shockwave(llList2String(target0,0));}
+    if(llList2String(target0,0) == "ExLarge_Shockwave"){shockwave();bullet_Shockwave(llList2String(target0,0));}
+} } }
