@@ -1,6 +1,10 @@
+list angle_animation=["[-1]","[-2]","[-3]","[-4]","[-5]","[1]","[2]","[3]","[4]","[5]"];
+
 string notecardName = "!uuids";
 string note_name;
+string anim0;
 
+integer aim_or_down_animation = TRUE;
 integer ichannel = 07899;
 integer cur_page = 1;
 integer chanhandlr;
@@ -11,8 +15,11 @@ integer slider4;
 integer intLine1;
 integer particle2;
 
+float event_time =.01;
+
 key keyConfigQueryhandle;
 key keyConfigUUID;
+key owner;
 
 integer getLinkNum(string primName)
 {
@@ -25,13 +32,43 @@ return FALSE;
 }
 startup()
 {
+owner = llGetOwner(); 
 slider3 = getLinkNum("slider3");
 slider4 = getLinkNum("slider4"); 
 particle2 = getLinkNum("particle2");
 llLinksetDataDeleteFound("temp-","");
 llSetLinkPrimitiveParamsFast(slider3,[PRIM_DESC,"1"]);
 llSetLinkPrimitiveParamsFast(slider4,[PRIM_DESC,"0"]);
-llRequestPermissions(llGetOwner(),PERMISSION_TAKE_CONTROLS);
+llRequestPermissions(llGetOwner(),PERMISSION_TAKE_CONTROLS|PERMISSION_TRIGGER_ANIMATION);
+}
+angle_anim(string animation) 
+{
+  if(animation != anim0)
+  {
+    integer x;
+    integer Lengthx = llGetListLength(angle_animation);
+    for ( ; x < Lengthx; x += 1)
+    {
+      if(llGetOwner() == owner)
+      {
+      if(animation == llList2String(angle_animation,x)){ anim0 = animation; llStartAnimation(animation); }else{ llStopAnimation(llList2String(angle_animation, x)); }
+      }
+    }
+  }
+}
+aim_angle(integer A)
+{
+if(A==0){angle_anim("NULL");}
+if(A==1){angle_anim("[1]");}
+if(A==2){angle_anim("[2]");}
+if(A==3){angle_anim("[3]");}
+if(A==4){angle_anim("[4]");}
+if(A==5){angle_anim("[5]");}
+if(A==-1){angle_anim("[-1]");}
+if(A==-2){angle_anim("[-2]");}
+if(A==-3){angle_anim("[-3]");}
+if(A==-4){angle_anim("[-4]");}
+if(A==-5){angle_anim("[-5]");}
 }
 integer readnote(string notename,integer switch)
 {
@@ -192,6 +229,8 @@ default
     link_message(integer sender_num, integer num, string msg, key id)
     {       
       list params = llParseString2List(msg, ["|"], []);
+      if(msg == "holster"){if(aim_or_down_animation == TRUE){llSetTimerEvent(0); angle_anim("NULL");}}
+      if(msg == "drawn"){if(aim_or_down_animation == TRUE){llSetTimerEvent(event_time);}}
       if(llList2String(params, 0) == "fetch_note_rationed")
       {
         if(readnote(llList2String(params,1),0) == 2)
@@ -210,6 +249,20 @@ default
     {
           if (strData == EOF){llMessageLinked(LINK_THIS,0,"music_changed","");}else
           {
-             keyConfigQueryhandle = llGetNotecardLine(note_name, ++intLine1);
-             llMessageLinked(LINK_THIS,0,"upload_note|" + strData,"");
-    }  }  }  }
+          keyConfigQueryhandle = llGetNotecardLine(note_name, ++intLine1);
+          llMessageLinked(LINK_THIS,0,"upload_note|" + strData,"");
+    }  }  }
+    timer()
+    {
+    integer view = llGetAgentInfo(llGetOwner());
+    if (view & AGENT_MOUSELOOK)
+    {
+    vector pos0 = llGetPos();  
+    vector pos1 = pos0-<5.5,0,0>*llGetRot();
+    float angle = pos0.z-pos1.z;
+    aim_angle((integer)angle);
+    }else{
+    angle_anim("NULL");
+    }
+  }
+}
