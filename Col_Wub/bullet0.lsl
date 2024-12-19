@@ -1,7 +1,7 @@
 particleGen() 
 {
 llSetStatus(STATUS_PHYSICS,FALSE);
-llSetStatus(STATUS_PHANTOM,FALSE); 
+llSetStatus(STATUS_PHANTOM,TRUE); 
 llParticleSystem([
 PSYS_PART_FLAGS,           
 PSYS_PART_FOLLOW_VELOCITY_MASK| 
